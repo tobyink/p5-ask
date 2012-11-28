@@ -1,0 +1,14 @@
+# This file provides instructions for packaging.
+
+`Ask`
+	perl_version_from m`Ask`;
+	version_from      m`Ask`;
+	readme_from       m`Ask`;
+	test_requires     p`Test::More 0.61`;
+	requires          p`File::Which`;
+	requires          p`Module::Runtime`;
+	requires          p`Moo`;
+	requires          p`namespace::sweep`;
+	requires          p`System::Command`;
+.
+
