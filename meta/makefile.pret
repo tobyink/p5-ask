@@ -10,5 +10,6 @@
 	requires          p`Moo`;
 	requires          p`namespace::sweep`;
 	requires          p`System::Command`;
+	requires          p`Sub::Exporter::Progressive`;
 .
 

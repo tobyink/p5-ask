@@ -14,6 +14,15 @@ use warnings;
 	use Module::Runtime qw(use_module use_package_optimistically);
 	use namespace::sweep 0.006;
 	
+	sub import {
+		shift;
+		if (@_) {
+			require Ask::Functions;
+			unshift @_, 'Ask::Functions';
+			goto \&Ask::Functions::import;
+		}
+	}
+	
 	sub detect {
 		my $class  = shift;
 		my %args   = @_==1 ? %{$_[0]} : @_;
@@ -201,6 +210,27 @@ To add extra methods to the Ask API you may use Moo roles:
 	
 	my $ask = Ask->detect(traits => ['AskX::Method::Password']);
 	say "GOT: ", $ask->password;
+
+=head2 Export
+
+You can optionally export the Ask methods as functions. The functions behave
+differently from the object-oriented interface in one regard; if called with
+one parameter, it's taken to be the "text" named argument.
+
+	use Ask qw( question info );
+	
+	if (question("Are you happy?")
+	and question("Do you know it?")
+	and question("Really want to show it?")) {
+		info("Then clap your hands!");
+	}
+
+Ask uses L<Sub::Exporter::Progressive>, so exported functions may be renamed:
+
+	use Ask
+		question => { -as => 'interrogate' },
+		info     => { -as => 'notify' },
+	;
 
 =head1 ENVIRONMENT
 
