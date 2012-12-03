@@ -5,6 +5,9 @@ use warnings;
 {
 	package Ask::Functions;
 	
+	our $AUTHORITY = 'cpan:TOBYINK';
+	our $VERSION   = '0.001';
+	
 	our $ASK;
 	
 	sub _called {
