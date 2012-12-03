@@ -6,7 +6,7 @@ use warnings;
 	package Ask::STDIO;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.000_02';
+	our $VERSION   = '0.001';
 	
 	use Moo;
 	use namespace::sweep;
