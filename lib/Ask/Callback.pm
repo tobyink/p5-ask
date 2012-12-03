@@ -9,7 +9,7 @@ use warnings;
 	package Ask::Callback;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.000_01';
+	our $VERSION   = '0.000_02';
 	
 	use Moo;
 	use namespace::sweep;

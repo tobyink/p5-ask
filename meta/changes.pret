@@ -4,3 +4,10 @@
 	issued  2012-12-01;
 	label   "Developer preview".
 
+`Ask 0.000_03 cpan:TOBYINK`
+	issued  2012-12-03;
+	label   "Developer preview II";
+	changeset [
+		item "Ask::Tk"^^Addition;
+	].
+
