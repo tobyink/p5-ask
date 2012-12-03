@@ -51,7 +51,11 @@ use warnings;
 		if (-t STDIN and -t STDOUT) {
 			return use_module("Ask::STDIO");
 		}
-		
+
+		if (eval { require Ask::Tk }) {
+			return 'Ask::Tk';
+		}
+
 		if (my $zenity = which('zenity')) {
 			$args->{zenity} //= $zenity;
 			return use_module("Ask::Zenity");
