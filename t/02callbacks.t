@@ -47,7 +47,7 @@ my $ask = Ask->detect(
 			multiple => 1,
 		) ],
 		[ qw( file2.txt file3.txt file4.txt ) ],
-	);	
+	);
 	flush_buffers();
 }
 
