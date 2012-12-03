@@ -2,6 +2,8 @@ use strict;
 use warnings;
 use Test::More;
 
+BEGIN { delete $ENV{PERL_ASK_BACKEND} };
+
 use Ask;
 
 my @input;

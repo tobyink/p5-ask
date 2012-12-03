@@ -44,6 +44,10 @@ use warnings;
 	sub _detect_class {
 		my ($class, $args) = @_;
 		
+		if (exists $ENV{PERL_ASK_BACKEND}) {
+			return use_package_optimistically($ENV{PERL_ASK_BACKEND});
+		}
+		
 		if (exists $args->{class}) {
 			return use_package_optimistically(delete $args->{class});
 		}
@@ -51,11 +55,11 @@ use warnings;
 		if (-t STDIN and -t STDOUT) {
 			return use_module("Ask::STDIO");
 		}
-
+		
 		if (eval { require Ask::Tk }) {
 			return 'Ask::Tk';
 		}
-
+		
 		if (my $zenity = which('zenity')) {
 			$args->{zenity} //= $zenity;
 			return use_module("Ask::Zenity");
@@ -194,9 +198,15 @@ To add extra methods to the Ask API you may use Moo roles:
 			$self->entry(%o);
 		}
 	}
-
+	
 	my $ask = Ask->detect(traits => ['AskX::Method::Password']);
 	say "GOT: ", $ask->password;
+
+=head1 ENVIRONMENT
+
+The C<PERL_ASK_BACKEND> environment variable can be used to influence the
+outcome of C<< Ask->detect >>. Indeed, it trumps all other factors. If set,
+it should be a full class name.
 
 =head1 BUGS
 
@@ -207,7 +217,7 @@ L<http://rt.cpan.org/Dist/Display.html?Queue=Ask>.
 
 See L<Ask::API> for documentation of API internals.
 
-Bundled API implementations are L<Ask::STDIO> and L<Ask::Zenity>.
+Bundled API implementations are L<Ask::STDIO>, L<Ask::Zenity> and L<Ask::Tk>.
 
 Similar modules: L<IO::Prompt>, L<IO::Prompt::Tiny> and many others.
 
