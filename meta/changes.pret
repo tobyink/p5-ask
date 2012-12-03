@@ -12,3 +12,13 @@
 		item "Fix repo link."^^Packaging;
 	].
 
+`Ask 0.001 cpan:TOBYINK`
+	issued  2012-12-03;
+	label   "Initial release";
+	changeset [
+		item "Document Ask::Tk."^^Documentation;
+		item "Document Ask::Callback."^^Documentation;
+		item "Respect PERL_ASK_BACKEND environment variable."^^Addition;
+		item "Allow functions to be exported via Sub::Exporter::Progressive."^^Addition;
+	].
+
