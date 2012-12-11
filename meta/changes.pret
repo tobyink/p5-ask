@@ -22,3 +22,9 @@
 		item "Allow functions to be exported via Sub::Exporter::Progressive."^^Addition;
 	].
 
+`Ask 0.002 cpan:TOBYINK`
+	issued  2012-12-11;
+	changeset [
+		item "Require at least version 0.006 of namespace::sweep."^^Packaging;
+	].
+

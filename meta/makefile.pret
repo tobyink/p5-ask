@@ -8,7 +8,7 @@
 	requires          p`File::Which`;
 	requires          p`Module::Runtime`;
 	requires          p`Moo`;
-	requires          p`namespace::sweep`;
+	requires          p`namespace::sweep 0.006`;
 	requires          p`System::Command`;
 	requires          p`Sub::Exporter::Progressive`;
 .
