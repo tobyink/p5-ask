@@ -28,3 +28,9 @@
 		item "Require at least version 0.006 of namespace::sweep."^^Packaging;
 	].
 
+`Ask 0.003 cpan:TOBYINK`
+	issued  2013-01-13;
+	changeset [
+		item "Ask::Gtk"^^Addition;
+	].
+
