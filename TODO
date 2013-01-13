@@ -1,1 +1,2 @@
-Ask::Wx
+Ask::Win32 - a native Win32 thing. Perhaps write a zenity-like command-line tool and wrap that?
+Ask::Wx - along same lines as Ask::Tk and Ask::Gtk
