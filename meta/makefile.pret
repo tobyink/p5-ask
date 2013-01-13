@@ -11,5 +11,7 @@
 	requires          p`namespace::sweep 0.006`;
 	requires          p`System::Command`;
 	requires          p`Sub::Exporter::Progressive`;
+	recommends        p`Gtk2`;
+	recommends        p`Tk`;
 .
 
