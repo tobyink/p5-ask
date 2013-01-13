@@ -65,10 +65,14 @@ use warnings;
 			return use_module("Ask::STDIO");
 		}
 		
+		if (eval { require Ask::Gtk }) {
+			return 'Ask::Gtk';
+		}
+
 		if (eval { require Ask::Tk }) {
 			return 'Ask::Tk';
 		}
-		
+
 		if (my $zenity = which('zenity')) {
 			$args->{zenity} //= $zenity;
 			return use_module("Ask::Zenity");
