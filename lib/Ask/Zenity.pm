@@ -36,7 +36,7 @@ use warnings;
 		my $zen = $self->system_wrapper->new(
 			$self->zenity_path,
 			_optionize($cmd),
-			map sprintf('%s=%s', _optionize($_), $o{$_}), keys %o,
+			map sprintf('%s="%s"', _optionize($_), $o{$_}), keys %o,
 		);
 		# warn join q[ ], $zen->cmdline;
 		return $zen;
@@ -51,17 +51,17 @@ use warnings;
 
 	sub info {
 		my $self = shift;
-		$self->_zenity(info => @_);
+		$self->_zenity(info => @_)->close;
 	}
 
 	sub warning {
 		my $self = shift;
-		$self->_zenity(warning => @_);
+		$self->_zenity(warning => @_)->close;
 	}
 
 	sub error {
 		my $self = shift;
-		$self->_zenity(error => @_);
+		$self->_zenity(error => @_)->close;
 	}
 
 	sub question {
@@ -76,6 +76,41 @@ use warnings;
 		my $text = readline($self->_zenity(file_selection => @_)->stdout);
 		chomp $text;
 		return split m#[|]#, $text;
+	}
+	
+	sub single_choice {
+		my ($self, %o) = @_;
+		$o{title} //= 'Single choice';
+		$o{text}  //= 'Choose one.';
+		my ($c) = $self->_choice(radiolist => 1, %o);
+		return $c;
+	}
+	
+	sub multiple_choice {
+		my ($self, %o) = @_;
+		$o{title} //= 'Multiple choice';
+		$o{text}  //= '';
+		return $self->_choice(multiple => 1, checklist => 1, %o);
+	}
+	
+	sub _choice {
+		my ($self, %o) = @_;
+		my $subsequent;
+		my $zen = $self->system_wrapper->new(
+			$self->zenity_path,
+			'--list',
+			($o{radiolist} ? '--radiolist' : ()),
+			($o{checklist} ? '--checklist' : ()),
+			($o{multiple}  ? '--multiple'  : ()),
+			'--column=Select',
+			'--column=Code',
+			'--column=Choice',
+			'--hide-column=2',
+			'--text', $o{text},
+			map { ($subsequent++ ? 'FALSE' : 'TRUE'), @$_ } @{$o{choices}},
+		);
+		chomp(my $line = readline($zen->stdout));
+		split m{\|}, $line;
 	}
 }
 

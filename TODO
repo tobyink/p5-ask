@@ -5,11 +5,7 @@ Ask::Win32 - a native Win32 thing. Perhaps write a zenity-like command-line tool
 
 Backend Improvements
 ====================
-Ask::Wx - support multi file selection
+Ask::Gtk - implement multiple_choice/single_choice
 Ask::STDIO - better file selection method
-
-
-API Improvements
-================
-multiple_choice method - select multiple items from a list
-single_choice method - select a single choice from a list
+Ask::Tk - implement multiple_choice/single_choice
+Ask::Wx - support multi file selection; implement multiple_choice/single_choice

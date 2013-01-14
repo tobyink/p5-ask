@@ -68,15 +68,15 @@ use warnings;
 		if (eval { require Ask::Gtk }) {
 			return 'Ask::Gtk';
 		}
-
+		
 		if (eval { require Ask::Tk }) {
 			return 'Ask::Tk';
 		}
-
+		
 		if (eval { require Ask::Wx }) {
 			return 'Ask::Wx';
 		}
-
+		
 		if (my $zenity = which('zenity')) {
 			$args->{zenity} //= $zenity;
 			return use_module("Ask::Zenity");
@@ -96,16 +96,16 @@ Ask - ask your users about stuff
 
 =head1 SYNOPSIS
 
-	use 5.010;
-	use Ask;
-	
-	my $ask = Ask->detect;
-	
-	if ($ask->question(text => "Are you happy?")
-	and $ask->question(text => "Do you know it?")
-	and $ask->question(text => "Really want to show it?")) {
-		$ask->info(text => "Then clap your hands!");
-	}
+   use 5.010;
+   use Ask;
+   
+   my $ask = Ask->detect;
+   
+   if ($ask->question(text => "Are you happy?")
+   and $ask->question(text => "Do you know it?")
+   and $ask->question(text => "Really want to show it?")) {
+      $ask->info(text => "Then clap your hands!");
+   }
 
 =head1 DESCRIPTION
 
@@ -129,13 +129,13 @@ object that implements the Ask API (see below).
 Note that these objects don't usually inherit from C<Ask>, so the following
 will typically be false:
 
-	my $ask = Ask->detect(%arguments);
-	$ask->isa("Ask");
+   my $ask = Ask->detect(%arguments);
+   $ask->isa("Ask");
 
 Instead, check:
 
-	my $ask = Ask->detect(%arguments);
-	$ask->DOES("Ask::API");
+   my $ask = Ask->detect(%arguments);
+   $ask->DOES("Ask::API");
 
 =back
 
@@ -194,6 +194,38 @@ The C<multiple> argument can be used to indicate that multiple files may be
 selected (they are returned as a list); the C<directory> argument can be
 used to I<hint> that you want a directory.
 
+=item C<< single_choice(text => $text, choices => \@choices) >>
+
+Asks the user to select a single option from many choices.
+
+For example:
+
+   my $answer = $ask->single_choice(
+      text    => "If a=1, b=2. What is a+b?",
+      choices => [
+         [ A => 12 ],
+         [ B => 3  ],
+         [ C => 2  ],
+         [ D => 42 ],
+         [ E => "Fish" ],
+      ],
+   );
+
+=item C<< multiple_choice(text => $text, choices => \@choices) >>
+
+Asks the user to select zero or more options from many choices.
+
+   my @ingredients = $ask->multiple_choice(
+      text    => "What do you want on your pizza?",
+      choices => [
+         [ cheese    => 'Cheese' ],
+         [ tomato    => 'Tomato' ],
+         [ ham       => 'Ham'    ],
+         [ pineapple => 'Pineapple' ],
+         [ chocolate => 'Chocolate' ],
+      ],
+   );
+
 =back
 
 If you wish to create your own implementation of the Ask API, please
@@ -205,19 +237,19 @@ Implementing L<Ask::API> allows you to extend Ask to other environments.
 
 To add extra methods to the Ask API you may use Moo roles:
 
-	{
-		package AskX::Method::Password;
-		use Moo::Role;
-		sub password {
-			my ($self, %o) = @_;
-			$o{hide_text} //= 1;
-			$o{text}      //= "please enter your password";
-			$self->entry(%o);
-		}
-	}
-	
-	my $ask = Ask->detect(traits => ['AskX::Method::Password']);
-	say "GOT: ", $ask->password;
+   {
+      package AskX::Method::Password;
+      use Moo::Role;
+      sub password {
+         my ($self, %o) = @_;
+         $o{hide_text} //= 1;
+         $o{text}      //= "please enter your password";
+         $self->entry(%o);
+      }
+   }
+   
+   my $ask = Ask->detect(traits => ['AskX::Method::Password']);
+   say "GOT: ", $ask->password;
 
 =head2 Export
 
@@ -225,20 +257,20 @@ You can optionally export the Ask methods as functions. The functions behave
 differently from the object-oriented interface in one regard; if called with
 one parameter, it's taken to be the "text" named argument.
 
-	use Ask qw( question info );
-	
-	if (question("Are you happy?")
-	and question("Do you know it?")
-	and question("Really want to show it?")) {
-		info("Then clap your hands!");
-	}
+   use Ask qw( question info );
+   
+   if (question("Are you happy?")
+   and question("Do you know it?")
+   and question("Really want to show it?")) {
+      info("Then clap your hands!");
+   }
 
 Ask uses L<Sub::Exporter::Progressive>, so exported functions may be renamed:
 
-	use Ask
-		question => { -as => 'interrogate' },
-		info     => { -as => 'notify' },
-	;
+   use Ask
+      question => { -as => 'interrogate' },
+      info     => { -as => 'notify' },
+   ;
 
 =head1 ENVIRONMENT
 

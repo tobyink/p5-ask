@@ -51,6 +51,81 @@ use warnings;
 			return $self->entry(text => ($o{text} // 'Enter file name'));
 		}
 	}
+	
+	my $format_choices = sub {
+		my ($self, $choices) = @_;
+		join q[, ], map { sprintf('"%s" (%s)', @$_) } @$choices;
+	};
+	
+	my $filter_chosen = sub {
+		my ($self, $choices, $response) = @_;
+		my $valid   = {}; $valid->{$_->[0]}++ for @$choices;
+		my @choices = ($response =~ /\w+/g);
+		return(
+			[ grep  $valid->{$_}, @choices ],
+			[ grep !$valid->{$_}, @choices ],
+		);
+	};
+	
+	sub multiple_choice {
+		my ($self, %o) = @_;
+		my $choices = $self->$format_choices($o{choices});
+		
+		my ($allowed, $disallowed, $repeat);
+		
+		for (;;) {
+			my $response = $self->entry(
+				text       => "$o{text}. Choices: $choices. (Separate multiple choices with white space.)",
+				entry_text => ($repeat // ''),
+			);
+			($allowed, $disallowed) = $self->$filter_chosen($o{choices}, $response);
+			if (@$disallowed) {
+				my $d = join q[, ], @$disallowed;
+				$self->error(
+					text => "Not valid: $d. Please try again.",
+				);
+				$repeat = join q[ ], @$allowed;
+			}
+			else {
+				last;
+			}
+		}
+		
+		return @$allowed;
+	}
+
+	sub single_choice {
+		my ($self, %o) = @_;
+		my $choices = $self->$format_choices($o{choices});
+		
+		my ($allowed, $disallowed, $repeat);
+		
+		for (;;) {
+			my $response = $self->entry(
+				text       => "$o{text}. Choices: $choices. (Choose one.)",
+				entry_text => ($repeat // ''),
+			);
+			($allowed, $disallowed) = $self->$filter_chosen($o{choices}, $response);
+			if (@$disallowed) {
+				my $d = join q[, ], @$disallowed;
+				$self->error(
+					text => "Not valid: $d. Please try again.",
+				);
+				$repeat = $allowed->[0];
+			}
+			elsif (@$allowed != 1) {
+				$self->error(
+					text => "Not valid: choose one.",
+				);
+				$repeat = $allowed->[0];
+			}
+			else {
+				last;
+			}
+		}
+		
+		return $allowed->[0];
+	}
 }
 
 1;
@@ -86,8 +161,9 @@ The only two methods that you absolutely must implement are C<info> and
 C<entry>.
 
 C<Ask::API> provides default implementations of C<warning>, C<error>,
-C<question> and C<file_selection> methods, but they're not espcially
-good, so you probably want to implement them too.
+C<question>, C<file_selection>, C<multiple_choice> and C<single_choice>
+methods, but they're not espcially good, so you probably want to implement
+most of those too.
 
 There is not currently any mechanism to "register" your implementation
 with L<Ask> so that C<< Ask->detect >> knows about it.

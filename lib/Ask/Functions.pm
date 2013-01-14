@@ -20,7 +20,10 @@ use warnings;
 
 	my @F;
 	BEGIN {
-		@F = qw(info warning error entry question file_selection);
+		@F = qw(
+			info warning error entry question file_selection
+			single_choice multiple_choice
+		);
 		
 		eval qq{
 			sub $_ { unshift \@_, $_; goto \\&_called };
