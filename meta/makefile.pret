@@ -13,5 +13,6 @@
 	requires          p`Sub::Exporter::Progressive`;
 	recommends        p`Gtk2`;
 	recommends        p`Tk`;
+	recommends        p`Wx`;
 .
 
