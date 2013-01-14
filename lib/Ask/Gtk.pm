@@ -121,6 +121,74 @@ use warnings;
 		Gtk2->main;
 		return @return;
 	}
+
+	sub _choice
+	{
+		my ($self, %o) = @_;
+		
+		my $return;
+		
+		my $dialog = Gtk2::Dialog->new(
+			($o{title} // 'Choose'),
+			undef,
+			[qw/ modal destroy-with-parent /],
+			'gtk-ok' => 'none',
+		);
+		
+		if (defined $o{text}) {
+			my $label = Gtk2::Label->new($o{text});
+			$dialog->vbox->add($label);
+		}
+		
+		my $tree_store = Gtk2::TreeStore->new(qw/Glib::String/);
+		for my $choice (@{$o{choices}}) {
+			my $iter = $tree_store->append(undef);
+			$tree_store->set($iter, 0 => $choice->[1]);
+		}
+		my $tree_view   = Gtk2::TreeView->new($tree_store);
+		my $tree_column = Gtk2::TreeViewColumn->new();
+		$tree_column->set_title("Choices");
+		my $renderer = Gtk2::CellRendererText->new;
+		$tree_column->pack_start($renderer, 0);
+		$tree_column->add_attribute($renderer, text => 0);
+		$tree_view->append_column($tree_column);
+		$dialog->vbox->set_size_request(300, 300);
+		$dialog->vbox->add($tree_view);
+		$tree_view->get_selection->set_mode($o{_tree_mode} // 'single');
+		
+		my @return;
+		my $done = sub {
+			$tree_view->get_selection->selected_foreach(sub {
+				my ($i) = $_[1]->get_indices;
+				push @return, $o{choices}[$i][0];
+			});			
+			$dialog->destroy;
+			Gtk2->main_quit;
+		};
+		
+		$dialog->signal_connect(response => $done);
+		
+		$dialog->show_all;
+		Gtk2->main;
+		return @return;
+	}
+
+	sub multiple_choice
+	{
+		my ($self, %o) = @_;
+		$o{title} //= 'Choose';
+		$o{_tree_mode} = 'multiple';
+		return $self->_choice(%o);
+	}
+
+	sub single_choice
+	{
+		my ($self, %o) = @_;
+		$o{title} //= 'Choose one';
+		$o{_tree_mode} = 'single';
+		my ($r) = $self->_choice(%o);
+		return $r;
+	}
 }
 
 1;
