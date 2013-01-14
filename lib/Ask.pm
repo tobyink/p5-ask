@@ -73,6 +73,10 @@ use warnings;
 			return 'Ask::Tk';
 		}
 
+		if (eval { require Ask::Wx }) {
+			return 'Ask::Wx';
+		}
+
 		if (my $zenity = which('zenity')) {
 			$args->{zenity} //= $zenity;
 			return use_module("Ask::Zenity");
