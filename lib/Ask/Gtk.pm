@@ -6,7 +6,7 @@ use warnings;
 	package Ask::Gtk;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.003';
+	our $VERSION   = '0.004';
 
 	use Moo;
 	use Gtk2 -init;

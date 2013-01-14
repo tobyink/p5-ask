@@ -6,7 +6,7 @@ use warnings;
 	package Ask::Zenity;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.003';
+	our $VERSION   = '0.004';
 	
 	use Moo;
 	use System::Command;
