@@ -85,6 +85,30 @@ use warnings;
 			$o{save} ? Wx::wxFD_SAVE() : Wx::wxFD_OPEN()
 		);
 	}
+	
+	sub single_choice
+	{
+		my ($self, %o) = @_;
+		my $return = Wx::GetSingleChoiceIndex(
+			($o{text} // $o{title} // ''),
+			($o{title} // 'Choose one'),
+			[ map $_->[1], @{$o{choices}} ],
+		);
+		return if $return < 0;
+		return $o{choices}[$return][0];
+	}
+
+	sub multiple_choice
+	{
+		my ($self, %o) = @_;
+		my @return = Wx::GetMultipleChoices(
+			($o{text} // $o{title} // ''),
+			($o{title} // 'Choose'),
+			[ map $_->[1], @{$o{choices}} ],
+		);
+		return if @return && $return[0] < 0;
+		return map $o{choices}[$_][0], @return;
+	}
 }
 
 1;

@@ -8,4 +8,4 @@ Backend Improvements
 Ask::Gtk - implement multiple_choice/single_choice
 Ask::STDIO - better file selection method
 Ask::Tk - implement multiple_choice/single_choice
-Ask::Wx - support multi file selection; implement multiple_choice/single_choice
+Ask::Wx - support multi file selection
