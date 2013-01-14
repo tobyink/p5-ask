@@ -11,4 +11,5 @@ Ask::STDIO - better file selection method
 
 API Improvements
 ================
-???
+multiple_choice method - select multiple items from a list
+single_choice method - select a single choice from a list
