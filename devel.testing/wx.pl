@@ -5,7 +5,7 @@ use Wx;
 say Wx::MessageBox("Question", "Icon Type:", Wx::wxICON_QUESTION()|Wx::wxOK());
 say Wx::wxYES();
 
-say Wx::GetTextFromUser( 
+say Wx::GetTextFromUser(
 	"TEXT",
 	"TITLE",
 	"ENTRY TEXT",

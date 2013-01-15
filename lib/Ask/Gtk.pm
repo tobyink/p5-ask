@@ -161,7 +161,7 @@ use warnings;
 			$tree_view->get_selection->selected_foreach(sub {
 				my ($i) = $_[1]->get_indices;
 				push @return, $o{choices}[$i][0];
-			});			
+			});
 			$dialog->destroy;
 			Gtk2->main_quit;
 		};

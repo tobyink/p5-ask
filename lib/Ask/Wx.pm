@@ -53,13 +53,13 @@ use warnings;
 	{
 		my ($self, %o) = @_;
 		
-		return Wx::GetPasswordFromUser( 
+		return Wx::GetPasswordFromUser(
 			($o{text}  // ''),
 			($o{title} // 'Text entry'),
 			($o{entry_text} // ''),
 		) if $o{hide_text};
 		
-		return Wx::GetTextFromUser( 
+		return Wx::GetTextFromUser(
 			($o{text}  // ''),
 			($o{title} // 'Text entry'),
 			($o{entry_text} // ''),
