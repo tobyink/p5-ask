@@ -76,13 +76,13 @@ use warnings;
 		warn "Multiple file selection box not implemented in Ask::Wx yet!\n"
 			if $o{multiple};
 		
-		return Wx::FileSelector( 
+		return Wx::FileSelector(
 			($o{text} // ''),
 			'',    # default path
 			'',    # default filename
 			'',    # default extension
 			'*.*', # wildcard
-			$o{save} ? Wx::wxFD_SAVE() : Wx::wxFD_OPEN()
+			$o{save} ? Wx::wxFD_SAVE() : Wx::wxFD_OPEN(),
 		);
 	}
 	
