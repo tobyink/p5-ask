@@ -34,3 +34,12 @@
 		item "Ask::Gtk"^^Addition;
 	].
 
+`Ask 0.004 cpan:TOBYINK`
+	issued  2013-01-14;
+	changeset [
+		item "Ask::Wx - does not yet support multi file selection dialog."^^Addition;
+		item "New API method: single_choice"^^Addition;
+		item "New API method: multiple_choice"^^Addition;
+		item "Correctly destroy no longer used Tk::MainWindow objects created in info, warning, question and file_selection methods."^^Bugfix;
+	].
+

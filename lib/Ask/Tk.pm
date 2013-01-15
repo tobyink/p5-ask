@@ -23,12 +23,14 @@ use warnings;
 		$o{messagebox_type} //= 'ok';
 		$o{messagebox_icon} //= 'info';
 		
-		return $mw->messageBox(
+		my $r = $mw->messageBox(
 			-title   => $o{title},
 			-message => $o{text},
 			-type    => $o{messagebox_type},
 			-icon    => $o{messagebox_icon},
 		);
+		$mw->destroy;
+		return $r;
 	}
 	
 	sub warning {
@@ -60,7 +62,6 @@ use warnings;
 		my $return = $o{entry_text};
 		my $entry = $mw->Entry(
 			(-show        => '*') x!!( $o{hide_text} ),
-			-relief       => 'ridge',
 			-textvariable => \$return,
 		)->pack;
 
@@ -89,7 +90,47 @@ use warnings;
 			push @files, $mw->FBox(%TK)->Show;
 		}
 		
+		$mw->destroy;
 		return @files;
+	}
+
+	sub _choice {
+		my ($self, %o) = @_;
+		my $mw = "MainWindow"->new;
+		
+		$mw->title( $o{title} );
+		$mw->Label(-text => $o{text})->pack if exists $o{text};
+		
+		my @return;
+		my $lbox = $mw->Listbox(-selectmode => ($o{_mode} // 'single'))->pack;
+		$lbox->insert(end => map $_->[1], @{$o{choices}});
+		
+		$mw->Button(
+			-text    => 'OK',
+			-command => sub {
+				@return = map $o{choices}[$_][0], $lbox->curselection;
+				$mw->destroy;
+			},
+		)->pack;
+		
+		MainLoop;
+		return @return;
+	}
+	
+	sub multiple_choice {
+		my ($self, %o) = @_;
+		$o{title} //= 'Choose';
+		$o{_mode}   = 'multiple';
+		my @r = $self->_choice(%o);
+		return @r;
+	}
+
+	sub single_choice {
+		my ($self, %o) = @_;
+		$o{title} //= 'Choose one';
+		$o{_mode}   = 'single';
+		my ($r) = $self->_choice(%o);
+		return $r;
 	}
 }
 
