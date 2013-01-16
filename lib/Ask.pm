@@ -195,6 +195,10 @@ For example:
       ],
    );
 
+The choices are C<< identifier => label >> pairs. The identifiers are not
+necessarily displayed to the user making the choice; the labels are. The
+function returns the identifier for the chosen option.
+
 The C<default> argument can be used to supply a default return value if the
 user cannot be asked for some reason (e.g. running on an unattended terminal).
 
@@ -212,6 +216,8 @@ Asks the user to select zero or more options from many choices.
          [ chocolate => 'Chocolate' ],
       ],
    );
+
+Returns list of identifiers.
 
 The C<default> argument can be used to supply a default return value if the
 user cannot be asked for some reason (e.g. running on an unattended terminal).
