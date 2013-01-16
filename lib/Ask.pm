@@ -11,15 +11,14 @@ use warnings;
 	use Carp qw(croak);
 	use Moo::Role qw();
 	use Module::Runtime qw(use_module use_package_optimistically);
-	
-	use namespace::clean;
-	
 	use Module::Pluggable (
 		search_path => 'Ask',
 		except      => [qw/ Ask::API Ask::Functions /],
 		inner       => 0,
 		require     => 0,
+		sub_name    => '__plugins',
 	);
+	use namespace::sweep;
 	
 	sub import {
 		shift;
@@ -28,6 +27,10 @@ use warnings;
 			unshift @_, 'Ask::Functions';
 			goto \&Ask::Functions::import;
 		}
+	}
+	
+	sub plugins {
+		__plugins(@_);
 	}
 	
 	sub detect {
