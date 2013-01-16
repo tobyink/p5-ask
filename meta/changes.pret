@@ -52,3 +52,9 @@
 		item "Ask::Fallback backend, which kicks in if $ENV{AUTOMATED_TESTING} or $ENV{PERL_MM_USE_DEFAULT}."^^Addition;
 	].
 
+`Ask 0.006 cpan:TOBYINK`
+	issued  2013-01-16;
+	changeset [
+		item "XML address book example script."^^Addition;
+	].
+
