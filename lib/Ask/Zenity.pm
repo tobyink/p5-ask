@@ -6,16 +6,17 @@ use warnings;
 	package Ask::Zenity;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.004';
+	our $VERSION   = '0.005';
 	
 	use Moo;
+	use File::Which qw(which);
 	use System::Command;
 	use namespace::sweep;
 	
 	has zenity_path => (
 		is       => 'ro',
 		isa      => sub { die "$_[0] not executable" unless -x $_[0] },
-		default  => sub { '/usr/bin/zenity' },
+		default  => sub { which('zenity') || '/usr/bin/zenity' },
 	);
 	
 	has system_wrapper => (
@@ -24,6 +25,10 @@ use warnings;
 	);
 	
 	with 'Ask::API';
+	
+	sub quality {
+		return 40;
+	}
 	
 	sub _optionize {
 		my $opt = shift;

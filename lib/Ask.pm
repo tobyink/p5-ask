@@ -6,13 +6,20 @@ use warnings;
 	package Ask;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.004';
+	our $VERSION   = '0.005';
 	
 	use Carp qw(croak);
-	use File::Which qw(which);
 	use Moo::Role qw();
 	use Module::Runtime qw(use_module use_package_optimistically);
-	use namespace::sweep 0.006;
+	
+	use namespace::clean;
+	
+	use Module::Pluggable (
+		search_path => 'Ask',
+		except      => [qw/ Ask::API Ask::Functions /],
+		inner       => 0,
+		require     => 0,
+	);
 	
 	sub import {
 		shift;
@@ -27,62 +34,26 @@ use warnings;
 		my $class  = shift;
 		my %args   = @_==1 ? %{$_[0]} : @_;
 		
-		my $instance_class = $class->_detect_class_with_traits(\%args)
-			or croak "Could not establish an appropriate Ask backend";
+		my @implementations =
+			reverse sort { $a->quality <=> $b->quality }
+			grep { use_package_optimistically($_)->DOES('Ask::API') }
+			$class->plugins;
 		
-		return $instance_class->new(\%args);
-	}
-	
-	my %_classes;
-	sub _detect_class_with_traits {
-		my ($class, $args) = @_;
-		my @traits = @{ delete($args->{traits}) // [] };
-		
-		my $instance_class = $class->_detect_class($args);
-		return unless defined $instance_class;
-		return $instance_class unless @traits;
-		
-		# Cache class
-		my $key = join q(|), $instance_class, sort @traits;
-		$_classes{$key} //= "Moo::Role"->create_class_with_roles(
-			$instance_class,
-			@traits,
-		);
-	}
-	
-	sub _detect_class {
-		my ($class, $args) = @_;
-		
-		if (exists $ENV{PERL_ASK_BACKEND}) {
-			return use_package_optimistically($ENV{PERL_ASK_BACKEND});
+		if ($ENV{AUTOMATED_TESTING} or $ENV{PERL_MM_USE_DEFAULT} or not @implementations) {
+			@implementations = use_module('Ask::Fallback');
+		}
+		elsif (exists $ENV{PERL_ASK_BACKEND}) {
+			@implementations = use_module($ENV{PERL_ASK_BACKEND});
 		}
 		
-		if (exists $args->{class}) {
-			return use_package_optimistically(delete $args->{class});
+		my @traits = @{ delete($args{traits}) // [] };
+		for my $i (@implementations) {
+			my $k = @traits ? "Moo::Role"->create_class_with_roles($i, @traits) : $i;
+			my $self = eval { $k->new(\%args) } or next;
+			return $self if $self->is_usable;
 		}
 		
-		if (-t STDIN and -t STDOUT) {
-			return use_module("Ask::STDIO");
-		}
-		
-		if (eval { require Ask::Gtk }) {
-			return 'Ask::Gtk';
-		}
-		
-		if (eval { require Ask::Tk }) {
-			return 'Ask::Tk';
-		}
-		
-		if (eval { require Ask::Wx }) {
-			return 'Ask::Wx';
-		}
-		
-		if (my $zenity = which('zenity')) {
-			$args->{zenity} //= $zenity;
-			return use_module("Ask::Zenity");
-		}
-		
-		return;
+		croak "No usable backend for Ask";
 	}
 }
 
@@ -176,6 +147,9 @@ The C<text> argument is supported as a way of communicating what you'd like
 them to enter. The C<hide_text> argument can be set to true to I<hint> that
 the text entered should not be displayed on screen (e.g. password input).
 
+The C<default> argument can be used to supply a default return value if the
+user cannot be asked for some reason (e.g. running on an unattended terminal).
+
 =item C<< question(text => $text, %arguments) >>
 
 Ask the user to answer a affirmative/negative question (i.e. OK/cancel,
@@ -185,6 +159,9 @@ The C<text> argument is the text of the question; the C<ok_label> argument
 can be used to set the label for the affirmative button; the C<cancel_label>
 argument for the negative button.
 
+The C<default> argument can be used to supply a default return value if the
+user cannot be asked for some reason (e.g. running on an unattended terminal).
+
 =item C<< file_selection(%arguments) >>
 
 Ask the user for a file name. Returns the file name. No checks are made to
@@ -193,6 +170,10 @@ ensure the file exists.
 The C<multiple> argument can be used to indicate that multiple files may be
 selected (they are returned as a list); the C<directory> argument can be
 used to I<hint> that you want a directory.
+
+The C<default> argument can be used to supply a default return value if the
+user cannot be asked for some reason (e.g. running on an unattended terminal).
+If C<multiple> is true, then this must be an arrayref.
 
 =item C<< single_choice(text => $text, choices => \@choices) >>
 
@@ -211,6 +192,9 @@ For example:
       ],
    );
 
+The C<default> argument can be used to supply a default return value if the
+user cannot be asked for some reason (e.g. running on an unattended terminal).
+
 =item C<< multiple_choice(text => $text, choices => \@choices) >>
 
 Asks the user to select zero or more options from many choices.
@@ -225,6 +209,10 @@ Asks the user to select zero or more options from many choices.
          [ chocolate => 'Chocolate' ],
       ],
    );
+
+The C<default> argument can be used to supply a default return value if the
+user cannot be asked for some reason (e.g. running on an unattended terminal).
+It must be an arrayref.
 
 =back
 
@@ -277,6 +265,10 @@ Ask uses L<Sub::Exporter::Progressive>, so exported functions may be renamed:
 The C<PERL_ASK_BACKEND> environment variable can be used to influence the
 outcome of C<< Ask->detect >>. Indeed, it trumps all other factors. If set,
 it should be a full class name.
+
+If either of the C<AUTOMATED_TESTING> or C<PERL_MM_USE_DEFAULT> environment
+variables are set to true, the C<< Ask::Fallback >> backend will automatically
+be used.
 
 =head1 BUGS
 

@@ -6,12 +6,21 @@ use warnings;
 	package Ask::STDIO;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.004';
+	our $VERSION   = '0.005';
 	
 	use Moo;
 	use namespace::sweep;
 	
 	with 'Ask::API';
+	
+	sub is_usable {
+		my ($self) = @_;
+		-t STDIN and -t STDOUT;
+	}
+	
+	sub quality {
+		(-t STDIN and -t STDOUT) ? 80 : 20;
+	}
 	
 	sub entry {
 		my ($self, %o) = @_;
@@ -30,17 +39,17 @@ use warnings;
 		
 		return $line;
 	}
-
+	
 	sub info {
 		my ($self, %o) = @_;
 		say STDOUT $o{text};
 	}
-
+	
 	sub warning {
 		my ($self, %o) = @_;
 		say STDERR "WARNING: $o{text}";
 	}
-
+	
 	sub error {
 		my ($self, %o) = @_;
 		say STDERR "ERROR: $o{text}";

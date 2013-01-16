@@ -6,13 +6,17 @@ use warnings;
 	package Ask::Tk;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.004';
+	our $VERSION   = '0.005';
 
 	use Moo;
 	use Tk;
 	use namespace::sweep;
 
 	with 'Ask::API';
+	
+	sub quality {
+		return 30;
+	}
 	
 	sub info {
 		my ($self, %o) = @_;

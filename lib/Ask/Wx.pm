@@ -6,13 +6,17 @@ use warnings;
 	package Ask::Wx;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.004';
+	our $VERSION   = '0.005';
 
 	use Moo;
 	use Wx;
 	use namespace::sweep;
 
 	with 'Ask::API';
+	
+	sub quality {
+		return 10;  # raise to 50 once multi file selection implemented
+	}
 	
 	sub info
 	{

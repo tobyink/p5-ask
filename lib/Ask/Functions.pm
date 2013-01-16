@@ -6,7 +6,7 @@ use warnings;
 	package Ask::Functions;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.004';
+	our $VERSION   = '0.005';
 	
 	our $ASK;
 	

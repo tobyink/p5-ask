@@ -43,3 +43,12 @@
 		item "Correctly destroy no longer used Tk::MainWindow objects created in info, warning, question and file_selection methods."^^Bugfix;
 	].
 
+`Ask 0.005 cpan:TOBYINK`
+	issued  2013-01-16;
+	changeset [
+		item "New (internal) API method: quality"^^Addition;
+		item "New (internal) API method: is_usable"^^Addition;
+		item "Saner implementation of Ask->detect, using Module::Pluggable."^^Change;
+		item "Ask::Fallback backend, which kicks in if $ENV{AUTOMATED_TESTING} or $ENV{PERL_MM_USE_DEFAULT}."^^Addition;
+	].
+

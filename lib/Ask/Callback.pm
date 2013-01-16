@@ -6,7 +6,7 @@ use warnings;
 	package Ask::Callback;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.004';
+	our $VERSION   = '0.005';
 	
 	use Moo;
 	use namespace::sweep;
@@ -15,7 +15,17 @@ use warnings;
 	
 	has input_callback  => (is => 'ro', required => 1);
 	has output_callback => (is => 'ro', required => 1);
-	
+
+	sub is_usable {
+		my ($self) = @_;
+		    ref $self->output_callback eq 'CODE'
+		and ref $self->input_callback  eq 'CODE';
+	}
+
+	sub quality {
+		return 0;
+	}
+
 	sub entry {
 		my ($self) = @_;
 		return $self->input_callback->();

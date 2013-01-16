@@ -6,12 +6,21 @@ use warnings;
 	package Ask::API;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.004';
+	our $VERSION   = '0.005';
 	
 	use Moo::Role;
 	
 	requires 'entry';  # get a string of text
 	requires 'info';   # display a string of text
+	
+	sub is_usable {
+		my ($self) = @_;
+		return 1;
+	}
+	
+	sub quality {
+		return 50;
+	}
 	
 	sub warning {
 		my ($self, %o) = @_;
@@ -165,8 +174,18 @@ C<question>, C<file_selection>, C<multiple_choice> and C<single_choice>
 methods, but they're not espcially good, so you probably want to implement
 most of those too.
 
-There is not currently any mechanism to "register" your implementation
-with L<Ask> so that C<< Ask->detect >> knows about it.
+If you name your package C<< Ask::Something >> then C<< Ask->detect >>
+will find it (via [mod://Module::Pluggable]).
+
+Methods used during detection are C<is_usable> which is called as an
+object method, and should return a boolean indicating its usability (for
+example, if STDIN is not connected to a terminal, Ask::STDIO returns
+false), and C<quality> which is called as a class method and should return
+a number between 0 and 100, 100 being a high-quality backend, 0 being
+low-quality.
+
+C<< Ask->detect >> returns the highest quality module that it can load,
+instantiate and claims to be usable.
 
 =head1 BUGS
 
