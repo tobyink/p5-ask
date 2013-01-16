@@ -42,11 +42,11 @@ use warnings;
 			grep { use_package_optimistically($_)->DOES('Ask::API') }
 			$class->plugins;
 		
-		if ($ENV{AUTOMATED_TESTING} or $ENV{PERL_MM_USE_DEFAULT} or not @implementations) {
-			@implementations = use_module('Ask::Fallback');
-		}
-		elsif (exists $ENV{PERL_ASK_BACKEND}) {
+		if (exists $ENV{PERL_ASK_BACKEND}) {
 			@implementations = use_module($ENV{PERL_ASK_BACKEND});
+		}
+		elsif ($ENV{AUTOMATED_TESTING} or $ENV{PERL_MM_USE_DEFAULT} or not @implementations) {
+			@implementations = use_module('Ask::Fallback');
 		}
 		
 		my @traits = @{ delete($args{traits}) // [] };
