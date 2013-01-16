@@ -96,6 +96,10 @@ This backend prints all output to STDERR; returns defaults for
 C<question>, C<file_selection>, etc, and croaks if no defaults are
 available.
 
+This backend is used if the C<PERL_MM_USE_DEFAULT> or C<AUTOMATED_TESTING>
+environemnt variables are set to true, or as a last resort if no other
+Ask backend can be used.
+
 =head1 BUGS
 
 Please report any bugs to

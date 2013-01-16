@@ -18,8 +18,8 @@ use warnings;
 
 	sub is_usable {
 		my ($self) = @_;
-		    ref $self->output_callback eq 'CODE'
-		and ref $self->input_callback  eq 'CODE';
+		ref $self->output_callback eq 'CODE' and
+		ref $self->input_callback  eq 'CODE';
 	}
 
 	sub quality {

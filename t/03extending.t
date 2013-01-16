@@ -19,7 +19,7 @@ use strict;
 use warnings;
 use Test::More;
 
-BEGIN { delete $ENV{PERL_ASK_BACKEND} };
+BEGIN { $ENV{PERL_ASK_BACKEND} = 'Ask::Callback' };
 
 use Ask;
 
@@ -42,7 +42,6 @@ sub flush_buffers {
 }
 
 my $ask = Ask->detect(
-	class           => 'Ask::Callback',
 	traits          => ['AskX::Method::Password'],
 	input_callback  => sub { shift @input },
 	output_callback => sub { push @output, $_[0] },

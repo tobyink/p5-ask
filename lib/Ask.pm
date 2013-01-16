@@ -155,7 +155,7 @@ user cannot be asked for some reason (e.g. running on an unattended terminal).
 
 =item C<< question(text => $text, %arguments) >>
 
-Ask the user to answer a affirmative/negative question (i.e. OK/cancel,
+Ask the user to answer an affirmative/negative question (i.e. OK/cancel,
 yes/no) defaulting to affirmative. Returns boolean.
 
 The C<text> argument is the text of the question; the C<ok_label> argument
@@ -282,7 +282,39 @@ L<http://rt.cpan.org/Dist/Display.html?Queue=Ask>.
 
 See L<Ask::API> for documentation of API internals.
 
-Bundled API implementations are L<Ask::STDIO>, L<Ask::Zenity> and L<Ask::Tk>.
+Bundled Ask API backends:
+
+=over
+
+=item *
+
+L<Ask::Callback> - implementation for testing; redirects input and output to callback functions.
+
+=item *
+
+L<Ask::Fallback> - returns default answers; for scripts running unattended.
+
+=item *
+
+L<Ask::Gtk> - GUI using L<Gtk2>.
+
+=item *
+
+L<Ask::STDIO> - based on STDIN/STDOUT/STDERR
+
+=item *
+
+L<Ask::Tk> - GUI using L<Tk>.
+
+=item *
+
+L<Ask::Wx> - GUI using L<Wx>.
+
+=item *
+
+L<Ask::Zenity> - GUI using the C<< /usr/bin/zenity >> binary (part of GNOME)
+
+=back
 
 Similar modules: L<IO::Prompt>, L<IO::Prompt::Tiny> and many others.
 
