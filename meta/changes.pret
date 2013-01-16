@@ -56,5 +56,6 @@
 	issued  2013-01-16;
 	changeset [
 		item "XML address book example script."^^Addition;
+		item "Corrections in Ask::Wx pod."^^Documentation;
 	].
 
