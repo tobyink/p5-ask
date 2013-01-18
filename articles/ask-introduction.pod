@@ -145,20 +145,20 @@ own:
 
    package Ask::VoiceRecognition {
       
-      use My::Voice::Generator ();
-      use My::Voice::Recognition ();
+      use MyApp::Voice::Generator ();
+      use MyApp::Voice::Recognition ();
       
       use Moo;
       with 'Ask::API';
       
       has generator => (
          is      => 'lazy',
-         default => sub { My::Voice::Generator->new },
+         default => sub { MyApp::Voice::Generator->new },
       );
       
       has recognition => (
          is      => 'lazy',
-         default => sub { My::Voice::Recognition->new },
+         default => sub { MyApp::Voice::Recognition->new },
       );
       
       sub info {
