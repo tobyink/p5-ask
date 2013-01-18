@@ -37,10 +37,9 @@ default answer instead.
    use warnings;
    use IO::Prompt::Tiny qw(prompt);
    
-   # In non-interactive mode, assume they want no fries...
    my $answer;
    until (defined $answer) {
-      print "Would you like fries with that?\n";
+      # In non-interactive mode, assume they want no fries...
       $_ = prompt("Would you like fries with that?", "No");
       $answer = 1 if /^Y/i;
       $answer = 0 if /^N/i;
