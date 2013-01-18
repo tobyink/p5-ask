@@ -63,12 +63,12 @@ in core, and not always straightforward to build)?
 
 Enter L<Ask>. Ask abstracts away the details of interacting with your
 user. It will do the terminal interaction test; it will check
-C<PERL_MM_USE_DEFAULT>; it check if the L<Wx>, L<Gtk2> or L<Tk>
+C<PERL_MM_USE_DEFAULT>; it will see if the L<Wx>, L<Gtk2> or L<Tk>
 modules are installed and usable; it will even use C</usr/bin/zenity>
 (a GNOME component for adding GUI dialog boxes to shell scripts) if
 it has to.
 
-It will only resort to using the fallback if there's no other
+It will only resort to using the default answer if there's no other
 possibility of interacting with the user. Here's our fast food worker
 using Ask:
 
@@ -115,6 +115,30 @@ Or if you just wish them to choose a single option from a list:
 Ask also has functions for file selection, text entry (including hidden
 text - passwords) and displaying information, warnings and errors.
 
+=head2 I object!
+
+If you object to using the functional interface, you can do:
+
+   my $interface = Ask->detect;
+
+And call C<question>, C<single_choice> and friends as object methods.
+
+   use 5.010;
+   use strict;
+   use warnings;
+   use Ask;
+   
+   my $interface = Ask->detect;
+   
+   my $answer = $interface->question(
+      text      => "Would you like fries with that?",
+      default   => 0,
+   );
+   say "Adding fries!" if $answer;
+
+The functional interface is just a friendly wrapper around Ask's
+object-oriented core.
+
 =head2 Boldly go
 
 Let's say that you want to hook up your script to your drive-through
@@ -156,11 +180,9 @@ own:
 
 That's all there is to it!
 
-You may also wish to override the default implementations of C<question>,
-C<file_selection>, C<multiple_choice>, etc, but those are all option
-because the Ask::API provides implementations of those which break them
-down into the two basic methods C<info> (for displaying messages) and
-C<entry> (for getting an input string).
+The Ask::API provides default implementations of C<question>,
+C<file_selection>, C<multiple_choice>, etc, which you can override if
+you choose to, but that is optional.
 
 To force Ask to use your backend rather than the built-in ones, just set
 the C<PERL_ASK_BACKEND> environment variable to the name of your module.
