@@ -117,11 +117,9 @@ text - passwords) and displaying information, warnings and errors.
 
 =head2 I object!
 
-If you object to using the functional interface, you can do:
-
-   my $interface = Ask->detect;
-
-And call C<question>, C<single_choice> and friends as object methods.
+If you object to using the functional interface, you can get an object
+using the C<< Ask->detect >> method and call C<question>,
+C<single_choice> and friends as object methods.
 
    use 5.010;
    use strict;
