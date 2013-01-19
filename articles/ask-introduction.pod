@@ -203,7 +203,7 @@ files being present.
 
 =back
 
-Ask is L<https://github.com/tobyink/p5-ask|on GitHub> and
-L<https://bitbucket.org/tobyink/p5-ask|on Bitbucket> so feel free to
+Ask is L<on GitHub|https://github.com/tobyink/p5-ask> and
+L<on Bitbucket|https://bitbucket.org/tobyink/p5-ask> so feel free to
 contribute improvements!
 
