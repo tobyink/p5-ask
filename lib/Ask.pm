@@ -130,6 +130,11 @@ Display a message to the user.
 Setting the argument C<no_wrap> to true can be used to I<hint> that line
 wrapping should be avoided.
 
+The C<lang> argument can be used to indicate the language of the C<text> as
+an ISO 639-1 code (e.g. "en" for English). Not all objects implementing the
+Ask API will pay attention to this hint, so don't be too surprised to see
+text in French with an English "OK" button underneath!
+
 =item C<< warning(text => $text, %arguments) >>
 
 Display a warning to the user.
@@ -153,6 +158,9 @@ the text entered should not be displayed on screen (e.g. password input).
 The C<default> argument can be used to supply a default return value if the
 user cannot be asked for some reason (e.g. running on an unattended terminal).
 
+The C<lang> argument can be used to indicate the language of the C<text> as
+an ISO 639-1 code (e.g. "en" for English).
+
 =item C<< question(text => $text, %arguments) >>
 
 Ask the user to answer an affirmative/negative question (i.e. OK/cancel,
@@ -164,6 +172,9 @@ argument for the negative button.
 
 The C<default> argument can be used to supply a default return value if the
 user cannot be asked for some reason (e.g. running on an unattended terminal).
+
+The C<lang> argument can be used to indicate the language of the C<text> as
+an ISO 639-1 code (e.g. "en" for English).
 
 =item C<< file_selection(%arguments) >>
 
@@ -202,6 +213,9 @@ function returns the identifier for the chosen option.
 The C<default> argument can be used to supply a default return value if the
 user cannot be asked for some reason (e.g. running on an unattended terminal).
 
+The C<lang> argument can be used to indicate the language of the C<text> and
+labels as an ISO 639-1 code (e.g. "en" for English).
+
 =item C<< multiple_choice(text => $text, choices => \@choices) >>
 
 Asks the user to select zero or more options from many choices.
@@ -222,6 +236,9 @@ Returns list of identifiers.
 The C<default> argument can be used to supply a default return value if the
 user cannot be asked for some reason (e.g. running on an unattended terminal).
 It must be an arrayref.
+
+The C<lang> argument can be used to indicate the language of the C<text> and
+labels as an ISO 639-1 code (e.g. "en" for English).
 
 =back
 
@@ -268,6 +285,14 @@ Ask uses L<Sub::Exporter::Progressive>, so exported functions may be renamed:
       question => { -as => 'interrogate' },
       info     => { -as => 'notify' },
    ;
+
+=head2 I18n
+
+It is strongly recommended that you pass a C<lang> argument with each method
+call. Not all backends yet pay attention to it.
+
+See also L<AskX::AutoLang> as a way to avoid passing C<< lang => "fu" >> to
+every single method call!
 
 =head1 ENVIRONMENT
 
