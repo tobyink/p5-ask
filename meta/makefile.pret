@@ -9,6 +9,7 @@
 	requires          p`Moo 1.000006`;
 	requires          p`namespace::sweep 0.006`;
 	requires          p`Sub::Exporter::Progressive`;
+	requires          p`Lingua::Boolean::Tiny 0.003`;
 	recommends        p`File::Which`;
 	recommends        p`System::Command`;
 	recommends        p`Gtk2`;

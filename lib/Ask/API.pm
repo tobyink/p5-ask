@@ -13,6 +13,12 @@ use warnings;
 	requires 'entry';  # get a string of text
 	requires 'info';   # display a string of text
 	
+	sub _lang_support {
+		my $self = shift;
+		require Lingua::Boolean::Tiny;
+		"Lingua::Boolean::Tiny"->new(@_);
+	}
+	
 	sub is_usable {
 		my ($self) = @_;
 		return 1;
@@ -36,13 +42,10 @@ use warnings;
 
 	sub question {
 		my ($self, %o) = @_;
-		
-		$o{cancel} //= qr{^(no|n|cancel)$}i;
-		
+				
 		my $response = $self->entry(text => $o{text});
-		return !!1 if $response ~~ $o{ok};
-		return !!0 if $response ~~ $o{cancel};
-		return !!1;
+		my $lang     = $self->_lang_support($o{lang});
+		$lang->boolean($response);
 	}
 	
 	sub file_selection {
