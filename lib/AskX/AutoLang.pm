@@ -1,5 +1,8 @@
 package AskX::AutoLang;
 
+our $AUTHORITY = 'cpan:TOBYINK';
+our $VERSION   = '0.007';
+
 use Moo::Role;
 
 my @methods = qw(
@@ -28,8 +31,8 @@ AskX::AutoLang - automatically supply a "lang" argument to all method calls
 
 =head1 SYNPOSIS
 
-   my $ask = Ask->detect(traits => ['AskX::AutoLang'], lang => "fr");
-	$ask->question("Voulez-vous coucher avec moi ce soir?");
+   my $ask = Ask->detect(traits => ['AskX::AutoLang'], language => "fr");
+   $ask->question("Voulez-vous coucher avec moi ce soir?");
 
 =head1 DESCRIPTION
 

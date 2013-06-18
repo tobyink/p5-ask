@@ -80,5 +80,6 @@
 			label "Use POSIX.pm to switch off terminal echo instead of Term::ReadKey.";
 			dcs:blame cpan:HAARG;
 		];
+		item "AskX::AutoLang."^^Addition;
 	].
 
