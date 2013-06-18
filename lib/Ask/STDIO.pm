@@ -28,10 +28,14 @@ use warnings;
 		my $line;
 		
 		if ($o{hide_text}) {
-			require Term::ReadKey;
-			Term::ReadKey::ReadMode('noecho');
+			require POSIX;
+			my $tio = POSIX::Termios->new;
+			$tio->getattr(0);
+			$tio->setlflag($tio->getlflag & ~POSIX::ECHO());
+			$tio->setattr(0);
 			chomp( $line = <STDIN> );
-			Term::ReadKey::ReadMode(0);
+			$tio->setlflag($tio->getlflag | POSIX::ECHO());
+			$tio->setattr(0);
 		}
 		else {
 			chomp( $line = <STDIN> );
