@@ -59,3 +59,26 @@
 		item "Corrections in Ask::Wx pod."^^Documentation;
 	].
 
+`Ask 0.007 cpan:TOBYINK`
+	issued  2013-06-18;
+	changeset [
+		item [
+			a dcs:Update, dcs:Bugfix;
+			label "Bumped Moo version requirement to 1.000006.";
+			dcs:thanks cpan:JBERGER;
+			dcs:fixes <tdb:2013:https://github.com/tobyink/p5-ask/issues/1>;
+		];
+		item [
+			a dcs:Change;
+			label "Add a 'lang' option; use Lingua::Boolean::Tiny to process it.";
+			comment "The beginning of the long i18n journey.";
+			dcs:thanks cpan:DAXIM;
+			seealso <https://rt.cpan.org/Ticket/Display.html?id=82925>;
+		];
+		item [
+			a dcs:Change;
+			label "Use POSIX.pm to switch off terminal echo instead of Term::ReadKey.";
+			dcs:blame cpan:HAARG;
+		];
+	].
+

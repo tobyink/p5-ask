@@ -6,7 +6,7 @@ use warnings;
 	package Ask::Fallback;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.006';
+	our $VERSION   = '0.007';
 	
 	use Moo;
 	use Carp qw(croak);
