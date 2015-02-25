@@ -37,10 +37,7 @@ use warnings;
 		my $class  = shift;
 		my %args   = @_==1 ? %{$_[0]} : @_;
 		
-		my @implementations =
-			reverse sort { $a->quality <=> $b->quality }
-			grep { use_package_optimistically($_)->DOES('Ask::API') }
-			$class->plugins;
+		my @implementations;
 		
 		if (exists $ENV{PERL_ASK_BACKEND}) {
 			@implementations = use_module($ENV{PERL_ASK_BACKEND});
@@ -48,6 +45,12 @@ use warnings;
 		elsif ($ENV{AUTOMATED_TESTING} or $ENV{PERL_MM_USE_DEFAULT} or not @implementations) {
 			@implementations = use_module('Ask::Fallback');
 		}
+		else {
+			@implementations =
+			reverse sort { $a->quality <=> $b->quality }
+			grep { use_package_optimistically($_)->DOES('Ask::API') }
+			$class->plugins;
+        }
 		
 		my @traits = @{ delete($args{traits}) // [] };
 		for my $i (@implementations) {
