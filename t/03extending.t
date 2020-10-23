@@ -31,8 +31,8 @@ BEGIN {
 	use Moo::Role;
 	sub password {
 		my ($self, %o) = @_;
-		$o{hide_text} //= 1;
-		$o{text}      //= "please enter your password";
+		$o{hide_text} ||= 1;
+		$o{text}      ||= "please enter your password";
 		$self->entry(%o);
 	}
 };

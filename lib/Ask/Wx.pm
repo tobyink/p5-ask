@@ -1,4 +1,4 @@
-use 5.010;
+use 5.008008;
 use strict;
 use warnings;
 
@@ -26,11 +26,13 @@ use warnings;
 	sub info
 	{
 		my ($self, %o) = @_;
-		$o{messagebox_icon}    //= Wx::wxICON_INFORMATION();
-		$o{messagebox_buttons} //= Wx::wxOK();
+		$o{messagebox_icon}    = Wx::wxICON_INFORMATION() unless defined $o{messagebox_icon};
+		$o{messagebox_buttons} = Wx::wxOK()               unless defined $o{messagebox_buttons};
+		$o{text}               = ''                       unless exists $o{text};
+		$o{title}              = 'Information'            unless exists $o{title};
 		Wx::MessageBox(
-			($o{text}  // ''),
-			($o{title} // 'Information'),
+			$o{text},
+			$o{title},
 			$o{messagebox_icon} | $o{messagebox_buttons},
 		);
 	}
@@ -62,31 +64,29 @@ use warnings;
 	{
 		my ($self, %o) = @_;
 		
-		return Wx::GetPasswordFromUser(
-			($o{text}  // ''),
-			($o{title} // 'Text entry'),
-			($o{entry_text} // ''),
-		) if $o{hide_text};
+		$o{text}        = ''           unless exists $o{text};
+		$o{title}       = 'Text extry' unless exists $o{title};
+		$o{entry_text}  = ''           unless exists $o{entry_text}
 		
-		return Wx::GetTextFromUser(
-			($o{text}  // ''),
-			($o{title} // 'Text entry'),
-			($o{entry_text} // ''),
-		);
+		$o{hide_text}
+			? Wx::GetPasswordFromUser( $o{text}, $o{title}, $o{entry_text} )
+			: Wx::GetTextFromUser( $o{text}, $o{title}, $o{entry_text} );
 	}
 	
 	sub file_selection
 	{
 		my ($self, %o) = @_;
 		
-		return Wx::DirSelector($o{text} // '')
+		$o{text} = '' unless exists $o{text};
+		
+		return Wx::DirSelector($o{text})
 			if $o{dir};
 		
 		warn "Multiple file selection box not implemented in Ask::Wx yet!\n"
 			if $o{multiple};
 		
 		return Wx::FileSelector(
-			($o{text} // ''),
+			$o{text},
 			'',    # default path
 			'',    # default filename
 			'',    # default extension
@@ -98,9 +98,14 @@ use warnings;
 	sub single_choice
 	{
 		my ($self, %o) = @_;
+		
+		$o{text}        = ''           unless exists $o{text};
+		$o{title}       = 'Choose one' unless exists $o{title};
+		$o{choices}     = []           unless defined $o{choices};
+		
 		my $return = Wx::GetSingleChoiceIndex(
-			($o{text} // $o{title} // ''),
-			($o{title} // 'Choose one'),
+			$o{text} || $o{title},
+			$o{title},
 			[ map $_->[1], @{$o{choices}} ],
 		);
 		return if $return < 0;
@@ -110,9 +115,14 @@ use warnings;
 	sub multiple_choice
 	{
 		my ($self, %o) = @_;
+		
+		$o{text}        = ''           unless exists $o{text};
+		$o{title}       = 'Choose one' unless exists $o{title};
+		$o{choices}     = []           unless defined $o{choices};
+		
 		my @return = Wx::GetMultipleChoices(
-			($o{text} // $o{title} // ''),
-			($o{title} // 'Choose'),
+			$o{text} || $o{title},
+			$o{title},
 			[ map $_->[1], @{$o{choices}} ],
 		);
 		return if @return && $return[0] < 0;

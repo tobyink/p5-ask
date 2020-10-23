@@ -1,4 +1,4 @@
-use 5.010;
+use 5.008008;
 use strict;
 use warnings;
 
@@ -91,16 +91,16 @@ use warnings;
 	
 	sub single_choice {
 		my ($self, %o) = @_;
-		$o{title} //= 'Single choice';
-		$o{text}  //= 'Choose one.';
+		$o{title} = 'Single choice' unless exists $o{title};
+		$o{text}  = 'Choose one.'   unless exists $o{text};
 		my ($c) = $self->_choice(radiolist => 1, %o);
 		return $c;
 	}
 	
 	sub multiple_choice {
 		my ($self, %o) = @_;
-		$o{title} //= 'Multiple choice';
-		$o{text}  //= '';
+		$o{title} = 'Multiple choice' unless exists $o{title};
+		$o{text}  = ''                unless exists $o{text};
 		return $self->_choice(multiple => 1, checklist => 1, %o);
 	}
 	

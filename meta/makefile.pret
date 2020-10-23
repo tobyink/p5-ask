@@ -3,7 +3,7 @@
 @prefix deps: <http://ontologi.es/doap-deps#> .
 
 `Ask`
-	deps:runtime-requirement      [ deps:on "perl 5.010000"^^deps:CpanId ];
+	deps:runtime-requirement      [ deps:on "perl 5.008008"^^deps:CpanId ];
 	deps:runtime-requirement      [ deps:on "Module::Runtime"^^deps:CpanId ];
 	deps:runtime-requirement      [ deps:on "Moo 1.000006"^^deps:CpanId ];
 	deps:runtime-requirement      [ deps:on "namespace::autoclean"^^deps:CpanId ];

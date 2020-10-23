@@ -1,4 +1,4 @@
-use 5.010;
+use 5.008008;
 use strict;
 use warnings;
 
@@ -52,7 +52,7 @@ use warnings;
 		my ($self, %o) = @_;
 		
 		if ($o{multiple}) {
-			$self->info(text => $o{text} // 'Enter file names (blank to finish)');
+			$self->info(text => $o{text} || 'Enter file names (blank to finish)');
 			my @filenames;
 			while (my $f = $self->entry) {
 				push @filenames, $f;
@@ -60,7 +60,7 @@ use warnings;
 			return @filenames;
 		}
 		else {
-			return $self->entry(text => ($o{text} // 'Enter file name'));
+			return $self->entry(text => $o{text} || 'Enter file name');
 		}
 	}
 	
@@ -88,7 +88,7 @@ use warnings;
 		for (;;) {
 			my $response = $self->entry(
 				text       => "$o{text}. Choices: $choices. (Separate multiple choices with white space.)",
-				entry_text => ($repeat // ''),
+				entry_text => $repeat || '',
 			);
 			($allowed, $disallowed) = $self->$filter_chosen($o{choices}, $response);
 			if (@$disallowed) {
@@ -115,7 +115,7 @@ use warnings;
 		for (;;) {
 			my $response = $self->entry(
 				text       => "$o{text}. Choices: $choices. (Choose one.)",
-				entry_text => ($repeat // ''),
+				entry_text => $repeat || '',
 			);
 			($allowed, $disallowed) = $self->$filter_chosen($o{choices}, $response);
 			if (@$disallowed) {
@@ -178,7 +178,7 @@ methods, but they're not espcially good, so you probably want to implement
 most of those too.
 
 If you name your package C<< Ask::Something >> then C<< Ask->detect >>
-will find it (via [mod://Module::Pluggable]).
+will find it (via L<Module::Pluggable>).
 
 Methods used during detection are C<is_usable> which is called as an
 object method, and should return a boolean indicating its usability (for

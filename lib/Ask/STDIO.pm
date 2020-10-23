@@ -1,4 +1,4 @@
-use 5.010;
+use 5.008008;
 use strict;
 use warnings;
 
@@ -46,17 +46,17 @@ use warnings;
 	
 	sub info {
 		my ($self, %o) = @_;
-		say STDOUT $o{text};
+		print STDOUT "$o{text}\n";
 	}
 	
 	sub warning {
 		my ($self, %o) = @_;
-		say STDERR "WARNING: $o{text}";
+		print STDERR "WARNING: $o{text}\n";
 	}
 	
 	sub error {
 		my ($self, %o) = @_;
-		say STDERR "ERROR: $o{text}";
+		print STDERR "ERROR: $o{text}\n";
 	}
 }
 

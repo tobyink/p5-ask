@@ -1,3 +1,7 @@
+use 5.008008;
+use strict;
+use warnings;
+
 package AskX::AutoLang;
 
 our $AUTHORITY = 'cpan:TOBYINK';

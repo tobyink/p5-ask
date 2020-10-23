@@ -1,4 +1,4 @@
-use 5.010;
+use 5.008008;
 use strict;
 use warnings;
 
@@ -29,12 +29,12 @@ use warnings;
 		my $mw = "MainWindow"->new;
 		$mw->withdraw;
 		
-		$o{messagebox_type} //= 'ok';
-		$o{messagebox_icon} //= 'info';
+		$o{messagebox_type} ||= 'ok';
+		$o{messagebox_icon} ||= 'info';
 		
 		my $r = $mw->messageBox(
-			-title   => $o{title},
-			-message => $o{text},
+			-title   => $o{title} || '',
+			-message => $o{text}  || '',
 			-type    => $o{messagebox_type},
 			-icon    => $o{messagebox_icon},
 		);
@@ -111,7 +111,7 @@ use warnings;
 		$mw->Label(-text => $o{text})->pack if exists $o{text};
 		
 		my @return;
-		my $lbox = $mw->Listbox(-selectmode => ($o{_mode} // 'single'))->pack;
+		my $lbox = $mw->Listbox(-selectmode => ($o{_mode} || 'single'))->pack;
 		$lbox->insert(end => map $_->[1], @{$o{choices}});
 		
 		$mw->Button(
@@ -128,16 +128,16 @@ use warnings;
 	
 	sub multiple_choice {
 		my ($self, %o) = @_;
-		$o{title} //= 'Choose';
-		$o{_mode}   = 'multiple';
+		$o{title} = 'Choose' unless exists $o{title};
+		$o{_mode} = 'multiple';
 		my @r = $self->_choice(%o);
 		return @r;
 	}
 	
 	sub single_choice {
 		my ($self, %o) = @_;
-		$o{title} //= 'Choose one';
-		$o{_mode}   = 'single';
+		$o{title} = 'Choose one' unless exists $o{title};
+		$o{_mode} = 'single';
 		my ($r) = $self->_choice(%o);
 		return $r;
 	}

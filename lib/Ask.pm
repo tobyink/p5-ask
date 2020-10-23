@@ -1,4 +1,4 @@
-use 5.010000;
+use 5.008008;
 use strict;
 use warnings;
 
@@ -38,7 +38,7 @@ use warnings;
 		my %args   = @_==1 ? %{$_[0]} : @_;
 		
 		my @implementations =
-			reverse sort { $a->quality <=> $b->quality }
+			sort { $b->quality <=> $a->quality }
 			grep { eval { use_package_optimistically($_)->DOES('Ask::API') } }
 			$class->plugins;
 		
@@ -49,7 +49,7 @@ use warnings;
 			@implementations = use_module('Ask::Fallback');
 		}
 		
-		my @traits = @{ delete($args{traits}) // [] };
+		my @traits = @{ delete($args{traits}) || [] };
 		for my $i (@implementations) {
 			my $k = @traits ? "Moo::Role"->create_class_with_roles($i, @traits) : $i;
 			my $self = eval { $k->new(\%args) } or next;
