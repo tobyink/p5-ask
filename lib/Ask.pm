@@ -39,7 +39,7 @@ use warnings;
 		
 		my @implementations =
 			reverse sort { $a->quality <=> $b->quality }
-			grep { use_package_optimistically($_)->DOES('Ask::API') }
+			grep { eval { use_package_optimistically($_)->DOES('Ask::API') } }
 			$class->plugins;
 		
 		if (exists $ENV{PERL_ASK_BACKEND}) {
