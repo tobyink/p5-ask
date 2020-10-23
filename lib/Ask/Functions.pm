@@ -8,29 +8,26 @@ use warnings;
 	our $AUTHORITY = 'cpan:TOBYINK';
 	our $VERSION   = '0.007';
 	
-	our $ASK;
+	use Exporter::Shiny qw(
+		info warning error entry question file_selection
+		single_choice multiple_choice
+	);
 	
-	sub _called {
-		$ASK //= do { require Ask; Ask->detect };
+	sub _exporter_validate_opts {
+		my ( $class, $opts ) = @_;
 		
-		my $method = shift;
-		unshift @_, 'text' if @_ % 2;
-		return $ASK->$method(@_);
+		$opts{'backend'} ||= do { require Ask; 'Ask'->detect };
+		$opts{'backend'}->is_usable or die;
 	}
-
-	my @F;
-	BEGIN {
-		@F = qw(
-			info warning error entry question file_selection
-			single_choice multiple_choice
-		);
-		
-		eval qq{
-			sub $_ { unshift \@_, $_; goto \\&_called };
-		} for @F;
+	
+	for my $f ( our @EXPORT_OK ) {
+		no strict 'refs';
+		*{"_generate_$f"} = sub {
+			my ( $class, $name, $args, $opts ) = @_;
+			my $backend = $opts{'backend'};
+			return sub { $backend->$f( @_ ) };
+		};
 	}
-
-	use Sub::Exporter::Progressive -setup => { exports => \@F };
 }
 
 1;
@@ -49,6 +46,13 @@ Ask::Functions - guts behind Ask's exported functions
 
 This module implements the exported functions for Ask. It is kept separate
 to avoid the functions polluting the namespace of the C<Ask> package.
+
+You can force the use of a particular backend.
+
+	use Ask::Tk;
+	use Ask { backend => Ask::Tk->new }, qw( question info );
+
+This module uses L<Exporter::Tiny>.
 
 =head1 BUGS
 
