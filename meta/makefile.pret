@@ -1,19 +1,19 @@
 # This file provides instructions for packaging.
 
+@prefix deps: <http://ontologi.es/doap-deps#> .
+
 `Ask`
-	perl_version_from m`Ask`;
-	version_from      m`Ask`;
-	readme_from       m`Ask`;
-	test_requires     p`Test::More 0.61`;
-	requires          p`Module::Runtime`;
-	requires          p`Moo 1.000006`;
-	requires          p`namespace::sweep 0.006`;
-	requires          p`Sub::Exporter::Progressive`;
-	requires          p`Lingua::Boolean::Tiny 0.003`;
-	recommends        p`File::Which`;
-	recommends        p`System::Command`;
-	recommends        p`Gtk2`;
-	recommends        p`Tk`;
-	recommends        p`Wx`;
-.
+	deps:runtime-requirement      [ deps:on "perl 5.010000"^^deps:CpanId ];
+	deps:runtime-requirement      [ deps:on "Module::Runtime"^^deps:CpanId ];
+	deps:runtime-requirement      [ deps:on "Moo 1.000006"^^deps:CpanId ];
+	deps:runtime-requirement      [ deps:on "namespace::sweep"^^deps:CpanId ];
+	deps:runtime-requirement      [ deps:on "Sub::Exporter::Tiny"^^deps:CpanId ];
+	deps:runtime-requirement      [ deps:on "Lingua::Boolean::Tiny 0.003"^^deps:CpanId ];
+	deps:runtime-recommendation   [ deps:on "File::Which"^^deps:CpanId ];
+	deps:runtime-recommendation   [ deps:on "System::Command"^^deps:CpanId ];
+	deps:runtime-recommendation   [ deps:on "Gtk"^^deps:CpanId ];
+	deps:runtime-recommendation   [ deps:on "Tk"^^deps:CpanId ];
+	deps:runtime-recommendation   [ deps:on "Wx"^^deps:CpanId ];
+	deps:test-requirement         [ deps:on "Test::More 0.98"^^deps:CpanId ];
+	.
 
