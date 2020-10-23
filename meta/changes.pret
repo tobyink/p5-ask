@@ -83,3 +83,13 @@
 		item "AskX::AutoLang."^^Addition;
 	].
 
+`Ask 0.008 cpan:TOBYINK`
+	issued  2020-10-23;
+	changeset [
+		item "Switch to Dist::Inkt."^^Packaging;
+		item "Replace Sub::Exporter::Progressive with Exporter::Tiny."^^Change;
+		item "Replace namespace::sweep with namespace::autoclean."^^Change;
+		item "Ask::Gtk, Ask::Wx, Ask::Tk, and Ask::Zenity now check DISPLAY environment variable to see if they will be usable."^^Bugfix;
+		item "Better skipping of backends which cannot be loaded."^^Bugfix;
+	].
+
