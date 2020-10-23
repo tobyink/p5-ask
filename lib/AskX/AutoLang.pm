@@ -5,7 +5,7 @@ use warnings;
 package AskX::AutoLang;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.008';
+our $VERSION   = '0.009';
 
 use Moo::Role;
 

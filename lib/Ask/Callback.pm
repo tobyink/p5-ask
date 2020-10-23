@@ -6,7 +6,7 @@ use warnings;
 	package Ask::Callback;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.008';
+	our $VERSION   = '0.009';
 	
 	use Moo;
 	use namespace::autoclean;

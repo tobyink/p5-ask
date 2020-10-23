@@ -93,3 +93,9 @@
 		item "Better skipping of backends which cannot be loaded."^^Bugfix;
 	].
 
+`Ask 0.009 cpan:TOBYINK`
+	issued  2020-10-23;
+	changeset [
+		item "Remove Perl-5.10-specific syntax and backport to Perl 5.8.8+."^^Change;
+	].
+
