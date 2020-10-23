@@ -11,7 +11,7 @@ use warnings;
 	use Moo;
 	use Gtk2 -init;
 	use URI;
-	use namespace::sweep;
+	use namespace::autoclean;
 	
 	with 'Ask::API';
 	

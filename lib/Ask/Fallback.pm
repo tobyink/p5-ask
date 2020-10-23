@@ -10,7 +10,7 @@ use warnings;
 	
 	use Moo;
 	use Carp qw(croak);
-	use namespace::sweep;
+	use namespace::autoclean;
 	
 	with 'Ask::API';
 	

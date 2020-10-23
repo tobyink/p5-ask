@@ -9,7 +9,7 @@ use warnings;
 	our $VERSION   = '0.007';
 	
 	use Moo;
-	use namespace::sweep;
+	use namespace::autoclean;
 	
 	with 'Ask::API';
 	

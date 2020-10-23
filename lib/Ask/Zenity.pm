@@ -11,7 +11,7 @@ use warnings;
 	use Moo;
 	use File::Which qw(which);
 	use System::Command;
-	use namespace::sweep;
+	use namespace::autoclean;
 	
 	has zenity_path => (
 		is       => 'ro',

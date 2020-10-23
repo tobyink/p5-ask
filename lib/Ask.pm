@@ -18,7 +18,7 @@ use warnings;
 		require     => 0,
 		sub_name    => '__plugins',
 	);
-	use namespace::sweep;
+	use namespace::autoclean;
 	
 	sub import {
 		shift;
