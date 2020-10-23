@@ -7,12 +7,17 @@ use warnings;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
 	our $VERSION   = '0.007';
-
+	
 	use Moo;
 	use Tk;
 	use namespace::sweep;
-
+	
 	with 'Ask::API';
+	
+	sub is_usable {
+		my ($self) = @_;
+		return !! $ENV{'DISPLAY'};
+	}
 	
 	sub quality {
 		return 30;
@@ -41,12 +46,12 @@ use warnings;
 		my ($self, %o) = @_;
 		$self->info(messagebox_icon => 'warning', %o);
 	}
-
+	
 	sub error {
 		my ($self, %o) = @_;
 		$self->info(messagebox_icon => 'error', %o);
 	}
-
+	
 	sub question {
 		my ($self, %o) = @_;
 		'Ok' eq $self->info(
@@ -55,7 +60,7 @@ use warnings;
 			%o,
 		);
 	}
-
+	
 	sub entry {
 		my ($self, %o) = @_;
 		my $mw = "MainWindow"->new;
@@ -68,7 +73,7 @@ use warnings;
 			(-show        => '*') x!!( $o{hide_text} ),
 			-textvariable => \$return,
 		)->pack;
-
+		
 		$entry->bind('<Return>', [ sub {
 			$return = $entry->get;
 			$mw->destroy;
@@ -97,7 +102,7 @@ use warnings;
 		$mw->destroy;
 		return @files;
 	}
-
+	
 	sub _choice {
 		my ($self, %o) = @_;
 		my $mw = "MainWindow"->new;
@@ -128,7 +133,7 @@ use warnings;
 		my @r = $self->_choice(%o);
 		return @r;
 	}
-
+	
 	sub single_choice {
 		my ($self, %o) = @_;
 		$o{title} //= 'Choose one';

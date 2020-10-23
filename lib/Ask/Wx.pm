@@ -7,12 +7,17 @@ use warnings;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
 	our $VERSION   = '0.007';
-
+	
 	use Moo;
 	use Wx;
 	use namespace::sweep;
-
+	
 	with 'Ask::API';
+	
+	sub is_usable {
+		my ($self) = @_;
+		return !! $ENV{'DISPLAY'};
+	}
 	
 	sub quality {
 		return 10;  # raise to 50 once multi file selection implemented
@@ -101,7 +106,7 @@ use warnings;
 		return if $return < 0;
 		return $o{choices}[$return][0];
 	}
-
+	
 	sub multiple_choice
 	{
 		my ($self, %o) = @_;

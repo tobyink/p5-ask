@@ -7,13 +7,18 @@ use warnings;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
 	our $VERSION   = '0.007';
-
+	
 	use Moo;
 	use Gtk2 -init;
 	use URI;
 	use namespace::sweep;
-
+	
 	with 'Ask::API';
+	
+	sub is_usable {
+		my ($self) = @_;
+		return !! $ENV{'DISPLAY'};
+	}
 	
 	sub info
 	{

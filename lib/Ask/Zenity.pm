@@ -15,7 +15,6 @@ use warnings;
 	
 	has zenity_path => (
 		is       => 'ro',
-		isa      => sub { die "$_[0] not executable" unless -x $_[0] },
 		default  => sub { which('zenity') || '/usr/bin/zenity' },
 	);
 	
@@ -25,6 +24,13 @@ use warnings;
 	);
 	
 	with 'Ask::API';
+	
+	sub is_usable {
+		my ($self) = @_;
+		return unless !! $ENV{'DISPLAY'};
+		return unless -x $self->zenity_path;
+		return 1;
+	}
 	
 	sub quality {
 		return 40;
