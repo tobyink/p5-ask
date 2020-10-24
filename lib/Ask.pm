@@ -25,7 +25,7 @@ use warnings;
 		if (@_) {
 			require Ask::Functions;
 			unshift @_, 'Ask::Functions';
-			goto \&Ask::Functions::import;
+			goto( $_[0]->can( 'import' ) );
 		}
 	}
 	

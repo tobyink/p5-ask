@@ -16,16 +16,16 @@ use warnings;
 	sub _exporter_validate_opts {
 		my ( $class, $opts ) = @_;
 		
-		$opts{'backend'} ||= do { require Ask; 'Ask'->detect };
-		$opts{'backend'}->is_usable or die;
+		$opts->{'backend'} ||= do { require Ask; 'Ask'->detect };
+		$opts->{'backend'}->is_usable or die;
 	}
 	
 	for my $f ( our @EXPORT_OK ) {
 		no strict 'refs';
 		*{"_generate_$f"} = sub {
 			my ( $class, $name, $args, $opts ) = @_;
-			my $backend = $opts{'backend'};
-			return sub { $backend->$f( @_ ) };
+			my $backend = $opts->{'backend'};
+			return sub { $backend->$f( @_ % 2 ? ( text => @_ ) : @_ ) };
 		};
 	}
 }
