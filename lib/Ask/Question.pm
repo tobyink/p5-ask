@@ -5,6 +5,9 @@ use warnings;
 {
 	package Ask::Question;
 	
+	our $AUTHORITY = 'cpan:TOBYINK';
+	our $VERSION   = '0.011';
+	
 	use Moo;
 	use Scalar::Util 'blessed';
 	
