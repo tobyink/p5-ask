@@ -170,10 +170,10 @@ use warnings;
 					}
 					
 					if ( $is_path ) {
-						$is_dir = 
+						$is_dir =
 							( $path_type <= Types::Path::Tiny::Dir() )    ||
 							( $path_type <= Types::Path::Tiny::AbsDir() ) ;
-						$is_abs = 
+						$is_abs =
 							( $path_type <= Types::Path::Tiny::AbsPath() ) ||
 							( $path_type <= Types::Path::Tiny::AbsFile() ) ||
 							( $path_type <= Types::Path::Tiny::AbsDir() )  ;
