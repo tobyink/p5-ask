@@ -106,3 +106,10 @@
 		item "Add Module::Pluggable to the dependency list."^^Packaging;
 	].
 
+`Ask 0.011 cpan:TOBYINK`
+	issued  2020-10-24;
+	changeset [
+		item "Ask::Question."^^Addition;
+		item "Minor issues with Ask::Functions fixed."^^Bugfix;
+	].
+

@@ -6,7 +6,7 @@ use warnings;
 	package Ask::Functions;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.010';
+	our $VERSION   = '0.011';
 	
 	use Exporter::Shiny qw(
 		info warning error entry question file_selection
