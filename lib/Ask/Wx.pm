@@ -66,7 +66,7 @@ use warnings;
 		
 		$o{text}        = ''           unless exists $o{text};
 		$o{title}       = 'Text extry' unless exists $o{title};
-		$o{entry_text}  = ''           unless exists $o{entry_text}
+		$o{entry_text}  = ''           unless exists $o{entry_text};
 		
 		$o{hide_text}
 			? Wx::GetPasswordFromUser( $o{text}, $o{title}, $o{entry_text} )
