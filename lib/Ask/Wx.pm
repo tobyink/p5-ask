@@ -6,7 +6,7 @@ use warnings;
 	package Ask::Wx;
 	
 	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.009';
+	our $VERSION   = '0.010';
 	
 	use Moo;
 	use Wx;

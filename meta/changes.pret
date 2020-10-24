@@ -99,3 +99,10 @@
 		item "Remove Perl-5.10-specific syntax and backport to Perl 5.8.8+."^^Change;
 	].
 
+`Ask 0.010 cpan:TOBYINK`
+	issued  2020-10-24;
+	changeset [
+		item "Fix syntax error in Ask::Wx introduced in version 0.009."^^Bugfix;
+		item "Add Module::Pluggable to the dependency list."^^Packaging;
+	].
+
