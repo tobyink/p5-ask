@@ -13,7 +13,7 @@ use warnings;
 	use Module::Runtime qw(use_module use_package_optimistically);
 	use Module::Pluggable (
 		search_path => 'Ask',
-		except      => [qw/ Ask::API Ask::Functions /],
+		except      => [qw/ Ask::API Ask::Functions Ask::Question /],
 		inner       => 0,
 		require     => 0,
 		sub_name    => '__plugins',
@@ -57,6 +57,11 @@ use warnings;
 		}
 		
 		croak "No usable backend for Ask";
+	}
+	
+	sub Q {
+		require Ask::Question;
+		'Ask::Question'->new( @_ );
 	}
 }
 
