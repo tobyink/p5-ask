@@ -1,6 +1,7 @@
-Detection Improvements
-======================
-Ask::Wx, Ask::Tk, Ask::Gtk2 should not assume they are usable because they could load. They should e.g. detect if an X server is running.
+Planned API Improvements
+========================
+file_selection should return Path::Tiny objects.
+file_selection should have an 'existing' option.
 
 New Backends
 ============
