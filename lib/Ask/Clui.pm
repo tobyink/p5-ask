@@ -10,7 +10,6 @@ our $VERSION   = '0.011';
 use Moo;
 use Term::Clui 1.65 ();
 use Path::Tiny 'path';
-use Term::ANSIColor 'colored';
 use namespace::autoclean;
 
 with 'Ask::API';
@@ -26,7 +25,7 @@ sub is_usable {
 
 sub quality {
 	my ( $self ) = ( shift );
-	( -t STDIN and -t STDOUT ) ? 90 : 30;
+	( -t STDIN and -t STDOUT ) ? 91 : 30;
 }
 
 sub info {
@@ -120,3 +119,49 @@ sub file_selection {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Ask::Clui - interact with a user via Term::Clui
+
+=head1 SYNOPSIS
+
+	my $ask = Ask::Clui->new;
+	
+	$ask->info(text => "I'm Charles Xavier");
+	if ($ask->question(text => "Would you like some breakfast?")) {
+		...
+	}
+
+=head1 DESCRIPTION
+
+Possibly the nicest terminal-based backend.
+
+=head1 BUGS
+
+Please report any bugs to
+L<http://rt.cpan.org/Dist/Display.html?Queue=Ask>.
+
+=head1 SEE ALSO
+
+L<Ask>, L<Term::Clui>.
+
+=head1 AUTHOR
+
+Toby Inkster E<lt>tobyink@cpan.orgE<gt>.
+
+=head1 COPYRIGHT AND LICENCE
+
+This software is copyright (c) 2020 by Toby Inkster.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=head1 DISCLAIMER OF WARRANTIES
+
+THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
