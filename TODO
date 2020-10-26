@@ -1,6 +1,5 @@
 Planned API Improvements
 ========================
-file_selection should return Path::Tiny objects.
 file_selection should have an 'existing' option.
 
 New Backends
