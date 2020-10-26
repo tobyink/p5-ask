@@ -8,7 +8,7 @@ our $AUTHORITY = 'cpan:TOBYINK';
 our $VERSION   = '0.011';
 
 use Moo;
-use Prima ();
+use Prima 1.59 ();
 use Path::Tiny 'path';
 use namespace::autoclean;
 
