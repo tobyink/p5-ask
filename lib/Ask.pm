@@ -130,8 +130,8 @@ Instead, check:
 
 =item C<< Ask->backends >>
 
-Returns a list of available backends. Each backend is a Perl class name.
-Some of the backends may be available (i.e. installed and able to be compiled)
+Returns a list of available backends. Each backend is a Perl class name. Some
+of the backends may be available (i.e. installed and able to be compiled)
 without being usable under current circumstances (e.g. the Gtk2 backend is
 available but cannot be used because no X server is running). To check
 usability, instantiate the class and call C<is_usable> on the instance.

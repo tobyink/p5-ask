@@ -131,7 +131,7 @@ __END__
 
 =head1 NAME
 
-Ask::Zenity - use C<< /usr/bin/zenity >> to interact with a user
+Ask::Zenity - use /usr/bin/zenity to interact with a user
 
 =head1 SYNOPSIS
 
