@@ -113,3 +113,12 @@
 		item "Minor issues with Ask::Functions fixed."^^Bugfix;
 	].
 
+`Ask 0.012 cpan:TOBYINK`
+	issued  2020-10-26;
+	changeset [
+		item "Ask::Clui."^^Addition;
+		item "Ask::Caroline."^^Addition;
+		item "Ask::Prima."^^Addition;
+		item "Ask->backends method."^^Addition;
+		item "file_selection now returns Path::Tiny objects instead of strings."^^Change;
+	].
