@@ -50,19 +50,41 @@ use warnings;
 	}
 	
 	sub file_selection {
-		my ($self, %o) = @_;
+		my ( $self, %opts ) = ( shift, @_ );
 		
-		if ($o{multiple}) {
-			$self->info(text => $o{text} || 'Enter file names (blank to finish)');
-			my @filenames;
-			while (my $f = $self->entry) {
-				push @filenames, path $f;
+		$opts{text} ||= 'Enter file name';
+		
+		my @chosen;
+		
+		FILE: {
+			my $got = $self->entry( text => $opts{text} );
+			
+			if ( not length $got ) {
+				last FILE if $opts{multiple};
+				redo FILE;
 			}
-			return @filenames;
-		}
-		else {
-			return path $self->entry(text => $o{text} || 'Enter file name');
-		}
+			
+			$got = path $got;
+			
+			if ( $opts{existing} and not $got->exists ) {
+				$self->error( text => 'Does not exist.' );
+				redo FILE;
+			}
+			
+			if ( $opts{directory} and not $got->is_dir ) {
+				$self->error( text => 'Is not a directory.' );
+				redo FILE;
+			}
+			
+			push @chosen, $got;
+			
+			if ( $opts{multiple} ) {
+				$self->info( text => 'Enter another file, or leave blank to finish.' );
+				redo FILE;
+			}
+		};
+		
+		$opts{multiple} ? @chosen : $chosen[0];
 	}
 	
 	my $format_choices = sub {
