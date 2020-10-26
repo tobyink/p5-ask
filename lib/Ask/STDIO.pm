@@ -25,9 +25,10 @@ use warnings;
 	sub entry {
 		my ($self, %o) = @_;
 		$self->info(text => $o{text}) if exists $o{text};
-		my $line;
 		
-		if ($o{hide_text}) {
+		my ( $line, $tio );
+		
+		if ( $o{hide_text} and do { require POSIX; $tio = 'POSIX::Termios'->new } ) {
 			require POSIX;
 			my $tio = POSIX::Termios->new;
 			$tio->getattr(0);
