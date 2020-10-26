@@ -33,14 +33,18 @@ use warnings;
 		__plugins(@_);
 	}
 	
+	sub backends {
+		my $class  = shift;
+		sort { $b->quality <=> $a->quality }
+			grep { eval { use_package_optimistically($_)->DOES('Ask::API') } }
+			$class->plugins;
+	}
+	
 	sub detect {
 		my $class  = shift;
 		my %args   = @_==1 ? %{$_[0]} : @_;
 		
-		my @implementations =
-			sort { $b->quality <=> $a->quality }
-			grep { eval { use_package_optimistically($_)->DOES('Ask::API') } }
-			$class->plugins;
+		my @implementations = $class->backends;
 		
 		if (exists $ENV{PERL_ASK_BACKEND}) {
 			@implementations = use_module($ENV{PERL_ASK_BACKEND});
@@ -52,7 +56,7 @@ use warnings;
 		my @traits = @{ delete($args{traits}) || [] };
 		for my $i (@implementations) {
 			my $k = @traits ? "Moo::Role"->create_class_with_roles($i, @traits) : $i;
-			my $self = eval { $k->new(\%args) } or next;
+			my $self = eval { $k->new({ %args, %{ $args{$i} or {} } }) } or next;
 			return $self if $self->is_usable;
 		}
 		
@@ -96,7 +100,7 @@ what sets C<Ask> apart from them is that C<Ask> will detect how your script
 is being run (in a terminal, headless, etc) and choose an appropriate way
 to interact with the user.
 
-=head2 Class Method
+=head2 Class Methods
 
 =over
 
@@ -104,6 +108,14 @@ to interact with the user.
 
 A constructor, sort of. It inspects the program's environment and returns an
 object that implements the Ask API (see below).
+
+Backend-specific arguments can be provided:
+
+  my $ask = Ask->detect(
+    %common_args,
+    'Ask::STDIO'  => \%stdio_args,
+    'Ask::Zenity' => \%zenity_args,
+  );
 
 Note that these objects don't usually inherit from C<Ask>, so the following
 will typically be false:
@@ -115,6 +127,22 @@ Instead, check:
 
    my $ask = Ask->detect(%arguments);
    $ask->DOES("Ask::API");
+
+=item C<< Ask->backends >>
+
+Returns a list of available backends. Each backend is a Perl class name.
+Some of the backends may be available (i.e. installed and able to be compiled)
+without being usable under current circumstances (e.g. the Gtk2 backend is
+available but cannot be used because no X server is running). To check
+usability, instantiate the class and call C<is_usable> on the instance.
+
+The list is sorted in "quality" order, best to worst, though quality is
+subjective.
+
+=item C<< Ask->plugins >>
+
+The same as C<< Ask->backends >>, but doesn't check that each result is a
+loadable Perl class, and doesn't sort them in any particular order.
 
 =back
 
