@@ -9,6 +9,7 @@ use warnings;
 	our $VERSION   = '0.011';
 	
 	use Moo::Role;
+	use Path::Tiny 'path';
 	
 	requires 'entry';  # get a string of text
 	requires 'info';   # display a string of text
@@ -55,12 +56,12 @@ use warnings;
 			$self->info(text => $o{text} || 'Enter file names (blank to finish)');
 			my @filenames;
 			while (my $f = $self->entry) {
-				push @filenames, $f;
+				push @filenames, path $f;
 			}
 			return @filenames;
 		}
 		else {
-			return $self->entry(text => $o{text} || 'Enter file name');
+			return path $self->entry(text => $o{text} || 'Enter file name');
 		}
 	}
 	

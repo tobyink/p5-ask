@@ -11,6 +11,7 @@
 	deps:runtime-requirement      [ deps:on "Type::Utils"^^deps:CpanId ];
 	deps:runtime-requirement      [ deps:on "Lingua::Boolean::Tiny 0.003"^^deps:CpanId ];
 	deps:runtime-requirement      [ deps:on "Module::Pluggable"^^deps:CpanId ];
+	deps:runtime-requirement      [ deps:on "Path::Tiny"^^deps:CpanId ];
 	deps:runtime-recommendation   [ deps:on "File::Which"^^deps:CpanId ];
 	deps:runtime-recommendation   [ deps:on "System::Command"^^deps:CpanId ];
 	deps:runtime-recommendation   [ deps:on "Gtk2"^^deps:CpanId ];

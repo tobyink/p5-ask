@@ -9,6 +9,7 @@ use warnings;
 	our $VERSION   = '0.011';
 	
 	use Moo;
+	use Path::Tiny 'path';
 	use Wx;
 	use namespace::autoclean;
 	
@@ -85,7 +86,7 @@ use warnings;
 		warn "Multiple file selection box not implemented in Ask::Wx yet!\n"
 			if $o{multiple};
 		
-		return Wx::FileSelector(
+		my $f = Wx::FileSelector(
 			$o{text},
 			'',    # default path
 			'',    # default filename
@@ -93,6 +94,8 @@ use warnings;
 			'*.*', # wildcard
 			$o{save} ? Wx::wxFD_SAVE() : Wx::wxFD_OPEN(),
 		);
+		
+		path($f);
 	}
 	
 	sub single_choice

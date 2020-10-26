@@ -10,7 +10,7 @@ use warnings;
 	
 	use Moo;
 	use Gtk2 -init;
-	use URI;
+	use Path::Tiny 'path';
 	use namespace::autoclean;
 	
 	with 'Ask::API';
@@ -105,6 +105,8 @@ use warnings;
 		my ($self, %o) = @_;
 		my @return;
 		
+		require URI;
+		
 		my $dialog = Gtk2::FileChooserDialog->new(
 			($o{title} || $o{text} || 'File selection'),
 			undef,
@@ -115,7 +117,7 @@ use warnings;
 		$dialog->set_select_multiple(!!$o{multiple});
 		
 		my $done = sub {
-			@return = map { URI::->new($_)->file } $dialog->get_uris;
+			@return = map path( 'URI'->new($_)->file ), $dialog->get_uris;
 			$dialog->destroy;
 			Gtk2->main_quit;
 		};
@@ -124,7 +126,8 @@ use warnings;
 		
 		$dialog->show;
 		Gtk2->main;
-		return @return;
+		
+		$o{multiple} ? @return : $return[0];
 	}
 
 	sub _choice

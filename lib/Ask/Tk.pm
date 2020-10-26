@@ -9,6 +9,7 @@ use warnings;
 	our $VERSION   = '0.011';
 	
 	use Moo;
+	use Path::Tiny 'path';
 	use Tk;
 	use namespace::autoclean;
 	
@@ -94,13 +95,13 @@ use warnings;
 			-type   => $o{directory} ? 'dir' : ($o{save} ? 'save' : 'open'),
 		);
 		
-		push @files, $mw->FBox(%TK)->Show;
+		push @files, path $mw->FBox(%TK)->Show;
 		while ($o{multiple} and $self->question(text => 'Select another?')) {
-			push @files, $mw->FBox(%TK)->Show;
+			push @files, path $mw->FBox(%TK)->Show;
 		}
 		
 		$mw->destroy;
-		return @files;
+		$o{multiple} ? @files : $files[0];
 	}
 	
 	sub _choice {

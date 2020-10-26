@@ -10,6 +10,7 @@ use warnings;
 	
 	use Moo;
 	use Carp qw(croak);
+	use Path::Tiny qw(path);
 	use namespace::autoclean;
 	
 	with 'Ask::API';
@@ -50,8 +51,8 @@ use warnings;
 	sub file_selection
 	{
 		my ($self, %o) = @_;
-		$o{multiple} and exists $o{default} and return @{$o{default}};
-		exists $o{default} and return $o{default};
+		$o{multiple} and exists $o{default} and return map path($_), @{$o{default}};
+		exists $o{default} and return path $o{default};
 		croak "file_selection (Ask::Fallback) with no default";
 	}
 	

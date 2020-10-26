@@ -11,6 +11,7 @@ use warnings;
 	use Moo;
 	use File::Which qw(which);
 	use System::Command;
+	use Path::Tiny qw( path );
 	use namespace::autoclean;
 	
 	has zenity_path => (
@@ -86,7 +87,8 @@ use warnings;
 		my $self = shift;
 		my $text = readline($self->_zenity(file_selection => @_)->stdout);
 		chomp $text;
-		return split m#[|]#, $text;
+		my @files = map path($_), split m#[|]#, $text;
+		@files == 1 ? $files[0] : @files;
 	}
 	
 	sub single_choice {

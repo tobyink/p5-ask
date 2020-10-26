@@ -222,6 +222,9 @@ The C<default> argument can be used to supply a default return value if the
 user cannot be asked for some reason (e.g. running on an unattended terminal).
 If C<multiple> is true, then this must be an arrayref.
 
+Until version 0.011, returned values are strings. Thereafter, returned values
+are L<Path::Tiny> objects.
+
 =item C<< single_choice(text => $text, choices => \@choices) >>
 
 Asks the user to select a single option from many choices.
