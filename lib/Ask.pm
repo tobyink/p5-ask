@@ -347,19 +347,27 @@ L<http://rt.cpan.org/Dist/Display.html?Queue=Ask>.
 
 =head1 SEE ALSO
 
-See L<Ask::API> for documentation of API internals.
-
-Bundled Ask API backends:
+Terminal backends:
 
 =over
 
 =item *
 
-L<Ask::Callback> - implementation for testing; redirects input and output to callback functions.
+L<Ask::STDIO> - very basic usage of STDIN/STDOUT/STDERR
 
 =item *
 
-L<Ask::Fallback> - returns default answers; for scripts running unattended.
+L<Ask::Caroline> - uses L<Caroline> and L<Term::ANSIColor> for better interaction
+
+=item *
+
+L<Ask::Clui> - uses L<Term::Clui> for better interaction
+
+=back
+
+GUI backends:
+
+=over
 
 =item *
 
@@ -367,7 +375,7 @@ L<Ask::Gtk> - GUI using L<Gtk2>.
 
 =item *
 
-L<Ask::STDIO> - based on STDIN/STDOUT/STDERR
+L<Ask::Prima> - GUI using L<Prima>.
 
 =item *
 
@@ -382,6 +390,24 @@ L<Ask::Wx> - GUI using L<Wx>.
 L<Ask::Zenity> - GUI using the C<< /usr/bin/zenity >> binary (part of GNOME)
 
 =back
+
+Backends which perform no real user interaction:
+
+=over
+
+=item *
+
+L<Ask::Callback> - implementation for testing; redirects input and output to callback functions.
+
+=item *
+
+L<Ask::Fallback> - returns default answers; for scripts running unattended.
+
+=back
+
+See L<Ask::API> for documentation of API internals.
+
+See L<Ask::Question> for an alternative way of using Ask.
 
 Similar modules: L<IO::Prompt>, L<IO::Prompt::Tiny> and many others.
 
