@@ -79,7 +79,8 @@ Ask - ask your users about stuff
 
 =head1 SYNOPSIS
 
-   use 5.010;
+Object-oriented style:
+
    use Ask;
    
    my $ask = Ask->detect;
@@ -88,6 +89,16 @@ Ask - ask your users about stuff
    and $ask->question(text => "Do you know it?")
    and $ask->question(text => "Really want to show it?")) {
       $ask->info(text => "Then clap your hands!");
+   }
+
+Functional style:
+
+   use Ask ':all';
+   
+   if (question("Are you happy?")
+   and question("Do you know it?")
+   and question("Really want to show it?")) {
+      info("Then clap your hands!");
    }
 
 =head1 DESCRIPTION
