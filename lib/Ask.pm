@@ -2,71 +2,73 @@ use 5.008008;
 use strict;
 use warnings;
 
-{
-	package Ask;
+package Ask;
+
+our $AUTHORITY = 'cpan:TOBYINK';
+our $VERSION   = '0.012';
+
+use Carp qw(croak);
+use Moo::Role qw();
+use Module::Runtime qw(use_module use_package_optimistically);
+use Module::Pluggable (
+	search_path => 'Ask',
+	except      => [qw/ Ask::API Ask::Functions Ask::Question /],
+	inner       => 0,
+	require     => 0,
+	sub_name    => '__plugins',
+);
+use namespace::autoclean;
+
+sub import {
+	shift;
+	if ( @_ ) {
+		require Ask::Functions;
+		unshift @_, 'Ask::Functions';
+		goto( $_[0]->can( 'import' ) );
+	}
+}
+
+sub plugins {
+	__plugins( @_ );
+}
+
+sub backends {
+	my $class = shift;
+	sort { $b->quality <=> $a->quality }
+		grep {
+		eval { use_package_optimistically( $_ )->DOES( 'Ask::API' ) }
+		} $class->plugins;
+}
+
+sub detect {
+	my $class = shift;
+	my %args  = @_ == 1 ? %{ $_[0] } : @_;
 	
-	our $AUTHORITY = 'cpan:TOBYINK';
-	our $VERSION   = '0.012';
+	my @implementations = $class->backends;
 	
-	use Carp qw(croak);
-	use Moo::Role qw();
-	use Module::Runtime qw(use_module use_package_optimistically);
-	use Module::Pluggable (
-		search_path => 'Ask',
-		except      => [qw/ Ask::API Ask::Functions Ask::Question /],
-		inner       => 0,
-		require     => 0,
-		sub_name    => '__plugins',
-	);
-	use namespace::autoclean;
-	
-	sub import {
-		shift;
-		if (@_) {
-			require Ask::Functions;
-			unshift @_, 'Ask::Functions';
-			goto( $_[0]->can( 'import' ) );
-		}
+	if ( exists $ENV{PERL_ASK_BACKEND} ) {
+		@implementations = use_module( $ENV{PERL_ASK_BACKEND} );
+	}
+	elsif ( $ENV{AUTOMATED_TESTING}
+		or $ENV{PERL_MM_USE_DEFAULT}
+		or not @implementations )
+	{
+		@implementations = use_module( 'Ask::Fallback' );
 	}
 	
-	sub plugins {
-		__plugins(@_);
+	my @traits = @{ delete( $args{traits} ) || [] };
+	for my $i ( @implementations ) {
+		my $k    = @traits ? "Moo::Role"->create_class_with_roles( $i, @traits ) : $i;
+		my $self = eval { $k->new( { %args, %{ $args{$i} or {} } } ) } or next;
+		return $self if $self->is_usable;
 	}
 	
-	sub backends {
-		my $class  = shift;
-		sort { $b->quality <=> $a->quality }
-			grep { eval { use_package_optimistically($_)->DOES('Ask::API') } }
-			$class->plugins;
-	}
-	
-	sub detect {
-		my $class  = shift;
-		my %args   = @_==1 ? %{$_[0]} : @_;
-		
-		my @implementations = $class->backends;
-		
-		if (exists $ENV{PERL_ASK_BACKEND}) {
-			@implementations = use_module($ENV{PERL_ASK_BACKEND});
-		}
-		elsif ($ENV{AUTOMATED_TESTING} or $ENV{PERL_MM_USE_DEFAULT} or not @implementations) {
-			@implementations = use_module('Ask::Fallback');
-		}
-		
-		my @traits = @{ delete($args{traits}) || [] };
-		for my $i (@implementations) {
-			my $k = @traits ? "Moo::Role"->create_class_with_roles($i, @traits) : $i;
-			my $self = eval { $k->new({ %args, %{ $args{$i} or {} } }) } or next;
-			return $self if $self->is_usable;
-		}
-		
-		croak "No usable backend for Ask";
-	}
-	
-	sub Q {
-		require Ask::Question;
-		'Ask::Question'->new( @_ );
-	}
+	croak "No usable backend for Ask";
+} #/ sub detect
+
+sub Q {
+	require Ask::Question;
+	'Ask::Question'->new( @_ );
 }
 
 1;
@@ -438,4 +440,3 @@ the same terms as the Perl 5 programming language system itself.
 THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
 WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-
