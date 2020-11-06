@@ -130,3 +130,9 @@
 		item "Show functional style in SYNOPSIS."^^Documentation;
 		item "Fix warning when default for Ask::Question is a string."^^Bugfix;
 	].
+
+`Ask 0.014 cpan:TOBYINK`
+	issued  2020-11-06;
+	changeset [
+		item "Ask::Question should be able to cope with missing text attribute."^^Bugfix;
+	].

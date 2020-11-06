@@ -5,7 +5,7 @@ use warnings;
 package Ask::Prima;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.013';
+our $VERSION   = '0.014';
 
 use Moo;
 use Prima 1.59 ();
