@@ -63,7 +63,7 @@ use warnings;
 		my $method   = $self->method;
 		my $title    = $self->title;
 		
-		undef $default if ( defined $default and $default == $self );
+		undef $default if ( blessed $default and $default == $self );
 		
 		return sub {
 			my @args = @_;
