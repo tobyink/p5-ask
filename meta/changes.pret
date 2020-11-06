@@ -122,3 +122,11 @@
 		item "Ask->backends method."^^Addition;
 		item "file_selection now returns Path::Tiny objects instead of strings."^^Change;
 	].
+
+`Ask 0.013 cpan:TOBYINK`
+	issued  2020-11-06;
+	changeset [
+		item "Tidy up code using Perl::Tidy."^^Change;
+		item "Show functional style in SYNOPSIS."^^Documentation;
+		item "Fix warning when default for Ask::Question is a string."^^Bugfix;
+	].

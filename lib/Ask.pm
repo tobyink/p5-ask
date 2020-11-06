@@ -5,7 +5,7 @@ use warnings;
 package Ask;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.012';
+our $VERSION   = '0.013';
 
 use Carp qw(croak);
 use Moo::Role qw();
