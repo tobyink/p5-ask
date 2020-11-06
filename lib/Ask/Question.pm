@@ -72,6 +72,9 @@ sub _build_coderef {
 		if ( ref $local_text ) {
 			$local_text = $local_text->( @args );
 		}
+		if ( not defined $local_text ) {
+			$local_text = '?';
+		}
 		
 		my $local_default = $default;
 		if ( ref $local_default ) {
