@@ -71,6 +71,12 @@ sub Q {
 	'Ask::Question'->new( @_ );
 }
 
+my $instance;
+sub instance {
+	shift;
+	@_ ? ( $instance = $_[0] ) : ( $instance ||= __PACKAGE__->detect );
+}
+
 1;
 
 __END__
@@ -116,6 +122,10 @@ to interact with the user.
 =head2 Class Methods
 
 =over
+
+=item C<< Ask->instance >>
+
+Singleton pattern. Can also be passed an argument to use it as a setter.
 
 =item C<< Ask->detect(%arguments) >>
 
