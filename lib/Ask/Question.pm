@@ -30,7 +30,7 @@ has method   => ( is => 'rwp' );
 
 sub _build_backend {
 	require Ask;
-	'Ask'->detect;
+	'Ask'->instance;
 }
 
 sub BUILDARGS {
@@ -79,6 +79,10 @@ sub _build_coderef {
 		my $local_default = $default;
 		if ( ref $local_default ) {
 			$local_default = $local_default->( @args );
+		}
+		
+		unless ( blessed($ask) and $ask->DOES('Ask::API') ) {
+			$ask = $ask->();
 		}
 		
 		my $local_type = $type;
