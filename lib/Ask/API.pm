@@ -5,7 +5,7 @@ use warnings;
 package Ask::API;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.014';
+our $VERSION   = '0.015';
 
 use Moo::Role;
 use Path::Tiny 'path';

@@ -136,3 +136,10 @@
 	changeset [
 		item "Ask::Question should be able to cope with missing text attribute."^^Bugfix;
 	].
+
+`Ask 0.015 cpan:TOBYINK`
+	issued  2020-11-09;
+	changeset [
+		item "Ask->instance."^^Addition;
+		item "Ask::Question's backend attribute now accepts a coderef as a value, and defaults to Ask->instance."^^Change;
+	].
